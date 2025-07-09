@@ -1,48 +1,76 @@
--- Create the database and use it
+-- Create Database
 CREATE DATABASE IF NOT EXISTS student_performance;
 USE student_performance;
 
--- Table 1: students
-CREATE TABLE students (
+-- Table: Students
+CREATE TABLE Students (
     student_id INT AUTO_INCREMENT PRIMARY KEY,
     gender VARCHAR(10),
-    race_ethnicity VARCHAR(20),
-    parental_education VARCHAR(50),
-    lunch VARCHAR(30),
-    test_preparation_course VARCHAR(30)
+    parental_level_of_education VARCHAR(100)
 );
 
--- Table 2: scores
-CREATE TABLE scores (
-    score_id INT AUTO_INCREMENT PRIMARY KEY,
+-- Table: Exams
+CREATE TABLE Exams (
+    exam_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT,
     math_score INT,
     reading_score INT,
     writing_score INT,
-    FOREIGN KEY (student_id) REFERENCES students(student_id)
+    FOREIGN KEY (student_id) REFERENCES Students(student_id)
 );
 
--- Table 3: performance
-CREATE TABLE performance (
-    performance_id INT AUTO_INCREMENT PRIMARY KEY,
+-- Table: TestPreparationCourses
+CREATE TABLE TestPreparationCourses (
+    course_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT,
-    performance_level VARCHAR(20),
-    predicted_pass BOOLEAN,
-    FOREIGN KEY (student_id) REFERENCES students(student_id)
+    test_preparation_course VARCHAR(50),
+    FOREIGN KEY (student_id) REFERENCES Students(student_id)
 );
 
--- Sample test data
-INSERT INTO students (gender, race_ethnicity, parental_education, lunch, test_preparation_course)
+-- Sample Data
+INSERT INTO Students (gender, parental_level_of_education)
 VALUES
-('female', 'group B', 'bachelor\'s degree', 'standard', 'none'),
-('male', 'group C', 'some college', 'free/reduced', 'completed');
+('female', 'bachelor’s degree'),
+('male', 'some college'),
+('female', 'high school');
 
-INSERT INTO scores (student_id, math_score, reading_score, writing_score)
+INSERT INTO Exams (student_id, math_score, reading_score, writing_score)
 VALUES
 (1, 72, 72, 74),
-(2, 69, 90, 88);
+(2, 69, 90, 88),
+(3, 90, 95, 93);
 
-INSERT INTO performance (student_id, performance_level, predicted_pass)
+INSERT INTO TestPreparationCourses (student_id, test_preparation_course)
 VALUES
-(1, 'Good', TRUE),
-(2, 'Average', TRUE);
+(1, 'none'),
+(2, 'completed'),
+(3, 'completed');
+
+-- Stored Procedure: Add a new exam score
+DELIMITER //
+CREATE PROCEDURE AddExamScore(
+    IN sid INT, IN math INT, IN reading INT, IN writing INT
+)
+BEGIN
+    INSERT INTO Exams (student_id, math_score, reading_score, writing_score)
+    VALUES (sid, math, reading, writing);
+END;
+//
+DELIMITER ;
+
+-- Trigger: Log when a new exam is inserted
+CREATE TABLE ExamLog (
+    log_id INT AUTO_INCREMENT PRIMARY KEY,
+    exam_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+DELIMITER //
+CREATE TRIGGER after_exam_insert
+AFTER INSERT ON Exams
+FOR EACH ROW
+BEGIN
+    INSERT INTO ExamLog (exam_id) VALUES (NEW.exam_id);
+END;
+//
+DELIMITER ;
