@@ -49,9 +49,10 @@ CREATE TABLE ExamAuditLog (
     old_writing_score INT,
     new_writing_score INT,
     changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    changed_by VARCHAR(50) DEFAULT CURRENT_USER,
+    changed_by VARCHAR(50),
     FOREIGN KEY (exam_id) REFERENCES Exams(exam_id)
 );
+
 
 -- Stored Procedure: Add Student with Test Prep and Exam Scores
 DELIMITER //

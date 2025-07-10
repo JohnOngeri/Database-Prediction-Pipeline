@@ -75,7 +75,7 @@ test_prep.insert_many([
 def update_exam_score(exam_id, new_math, new_reading, new_writing, changed_by):
     exam = exams.find_one({"_id": exam_id})
     if not exam:
-        print("❌ Exam not found.")
+        print("Exam not found.")
         return
 
     # Compare old and new
@@ -102,15 +102,15 @@ def update_exam_score(exam_id, new_math, new_reading, new_writing, changed_by):
             "changed_at": datetime.now(),
             "changed_by": changed_by
         })
-        print("✅ Exam updated and logged.")
+        print(" Exam updated and logged.")
     else:
-        print("ℹ️ No changes detected. No update needed.")
+        print("ℹ No changes detected. No update needed.")
 
 # Example update call:
 update_exam_score(exam2, 75, 90, 88, "admin_user")
 
 # === 5. Aggregation: Join Students + Exams + Prep ===
-print("\n📊 Aggregated Student Performance:")
+print("\n Aggregated Student Performance:")
 pipeline = [
     {
         "$lookup": {
@@ -152,4 +152,4 @@ results = db.students.aggregate(pipeline)
 for doc in results:
     print(doc)
 
-print("\n✅ Script completed successfully.")
+print("\n Script completed successfully.")
