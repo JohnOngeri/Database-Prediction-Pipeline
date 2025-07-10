@@ -2,7 +2,7 @@
 CREATE DATABASE IF NOT EXISTS student_performance;
 USE student_performance;
 
--- Table: Students
+-- Table: Students (contains all demographic data from CSV)
 CREATE TABLE Students (
     student_id INT AUTO_INCREMENT PRIMARY KEY,
     gender ENUM('male', 'female') NOT NULL,
@@ -11,35 +11,26 @@ CREATE TABLE Students (
         'some high school',
         'high school',
         'some college',
-        'associate\'s degree',
-        'bachelor\'s degree',
-        'master\'s degree'
+        'associate''s degree',
+        'bachelor''s degree',
+        'master''s degree'
     ) NOT NULL,
     lunch ENUM('standard', 'free/reduced') NOT NULL,
+    test_preparation ENUM('completed', 'none') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Table: Exams
+-- Table: Exams (contains all score data from CSV)
 CREATE TABLE Exams (
     exam_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
     math_score INT CHECK (math_score BETWEEN 0 AND 100),
     reading_score INT CHECK (reading_score BETWEEN 0 AND 100),
     writing_score INT CHECK (writing_score BETWEEN 0 AND 100),
-    exam_date DATE NOT NULL,
     FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE CASCADE
 );
 
--- Table: TestPreparation
-CREATE TABLE TestPreparation (
-    preparation_id INT AUTO_INCREMENT PRIMARY KEY,
-    student_id INT NOT NULL,
-    course_completed BOOLEAN NOT NULL DEFAULT FALSE,
-    completion_date DATE,
-    FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE CASCADE
-);
-
--- Table: ExamAuditLog
+-- Table: ExamAuditLog (for tracking changes, not in original dataset)
 CREATE TABLE ExamAuditLog (
     log_id INT AUTO_INCREMENT PRIMARY KEY,
     exam_id INT NOT NULL,
@@ -55,35 +46,30 @@ CREATE TABLE ExamAuditLog (
     FOREIGN KEY (exam_id) REFERENCES Exams(exam_id)
 );
 
--- Stored Procedure: Add complete student record
+-- Stored Procedure: Add complete student record from CSV data
 DELIMITER //
-CREATE PROCEDURE AddStudentWithScores(
+CREATE PROCEDURE AddStudentRecord(
     IN p_gender VARCHAR(10),
     IN p_race VARCHAR(20),
     IN p_parent_edu VARCHAR(50),
     IN p_lunch VARCHAR(20),
-    IN p_test_prep BOOLEAN,
+    IN p_test_prep VARCHAR(20),
     IN p_math_score INT,
     IN p_reading_score INT,
-    IN p_writing_score INT,
-    IN p_exam_date DATE
+    IN p_writing_score INT
 )
 BEGIN
     DECLARE v_student_id INT;
     
-    -- Insert student
-    INSERT INTO Students (gender, race_ethnicity, parental_level_of_education, lunch)
-    VALUES (p_gender, p_race, p_parent_edu, p_lunch);
+    -- Insert student (all demographic fields from CSV)
+    INSERT INTO Students (gender, race_ethnicity, parental_level_of_education, lunch, test_preparation)
+    VALUES (p_gender, p_race, p_parent_edu, p_lunch, p_test_prep);
     
     SET v_student_id = LAST_INSERT_ID();
     
-    -- Insert exam scores
-    INSERT INTO Exams (student_id, math_score, reading_score, writing_score, exam_date)
-    VALUES (v_student_id, p_math_score, p_reading_score, p_writing_score, p_exam_date);
-    
-    -- Insert test preparation
-    INSERT INTO TestPreparation (student_id, course_completed)
-    VALUES (v_student_id, p_test_prep);
+    -- Insert exam scores (all score fields from CSV)
+    INSERT INTO Exams (student_id, math_score, reading_score, writing_score)
+    VALUES (v_student_id, p_math_score, p_reading_score, p_writing_score);
 END //
 DELIMITER ;
 
@@ -120,7 +106,7 @@ BEGIN
 END //
 DELIMITER ;
 
--- Sample Data
-CALL AddStudentWithScores('female', 'group D', 'bachelor''s degree', 'standard', TRUE, 72, 72, 74, '2023-01-15');
-CALL AddStudentWithScores('male', 'group A', 'some college', 'free/reduced', FALSE, 69, 90, 88, '2023-01-15');
-CALL AddStudentWithScores('female', 'group C', 'high school', 'standard', TRUE, 90, 95, 93, '2023-01-16');
+-- Sample Data from CSV (first 3 records)
+CALL AddStudentRecord('female', 'group B', 'bachelor''s degree', 'standard', 'none', 72, 72, 74);
+CALL AddStudentRecord('female', 'group C', 'some college', 'standard', 'completed', 69, 90, 88);
+CALL AddStudentRecord('female', 'group B', 'master''s degree', 'standard', 'none', 90, 95, 93);
