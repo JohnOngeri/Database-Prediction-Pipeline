@@ -2,7 +2,7 @@
 CREATE DATABASE IF NOT EXISTS student_performance;
 USE student_performance;
 
--- Table: Students (contains all demographic data from CSV)
+-- Table: Students (demographics, excluding test_preparation)
 CREATE TABLE Students (
     student_id INT AUTO_INCREMENT PRIMARY KEY,
     gender ENUM('male', 'female') NOT NULL,
@@ -16,11 +16,18 @@ CREATE TABLE Students (
         'master''s degree'
     ) NOT NULL,
     lunch ENUM('standard', 'free/reduced') NOT NULL,
-    test_preparation ENUM('completed', 'none') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Table: Exams (contains all score data from CSV)
+-- Table: TestPreparation (now separate)
+CREATE TABLE TestPreparation (
+    prep_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    status ENUM('completed', 'none') NOT NULL,
+    FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE CASCADE
+);
+
+-- Table: Exams
 CREATE TABLE Exams (
     exam_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
@@ -30,7 +37,7 @@ CREATE TABLE Exams (
     FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE CASCADE
 );
 
--- Table: ExamAuditLog (for tracking changes, not in original dataset)
+-- Table: ExamAuditLog
 CREATE TABLE ExamAuditLog (
     log_id INT AUTO_INCREMENT PRIMARY KEY,
     exam_id INT NOT NULL,
@@ -46,7 +53,7 @@ CREATE TABLE ExamAuditLog (
     FOREIGN KEY (exam_id) REFERENCES Exams(exam_id)
 );
 
--- Stored Procedure: Add complete student record from CSV data
+-- Stored Procedure: Add Student with Test Prep and Exam Scores
 DELIMITER //
 CREATE PROCEDURE AddStudentRecord(
     IN p_gender VARCHAR(10),
@@ -60,14 +67,18 @@ CREATE PROCEDURE AddStudentRecord(
 )
 BEGIN
     DECLARE v_student_id INT;
-    
-    -- Insert student (all demographic fields from CSV)
-    INSERT INTO Students (gender, race_ethnicity, parental_level_of_education, lunch, test_preparation)
-    VALUES (p_gender, p_race, p_parent_edu, p_lunch, p_test_prep);
-    
+
+    -- Insert student
+    INSERT INTO Students (gender, race_ethnicity, parental_level_of_education, lunch)
+    VALUES (p_gender, p_race, p_parent_edu, p_lunch);
+
     SET v_student_id = LAST_INSERT_ID();
-    
-    -- Insert exam scores (all score fields from CSV)
+
+    -- Insert test preparation status
+    INSERT INTO TestPreparation (student_id, status)
+    VALUES (v_student_id, p_test_prep);
+
+    -- Insert exam scores
     INSERT INTO Exams (student_id, math_score, reading_score, writing_score)
     VALUES (v_student_id, p_math_score, p_reading_score, p_writing_score);
 END //
@@ -82,7 +93,7 @@ BEGIN
     IF OLD.math_score != NEW.math_score OR 
        OLD.reading_score != NEW.reading_score OR 
        OLD.writing_score != NEW.writing_score THEN
-       
+
         INSERT INTO ExamAuditLog (
             exam_id,
             action_type,
@@ -106,7 +117,7 @@ BEGIN
 END //
 DELIMITER ;
 
--- Sample Data from CSV (first 3 records)
+-- Sample Data (3 Records)
 CALL AddStudentRecord('female', 'group B', 'bachelor''s degree', 'standard', 'none', 72, 72, 74);
 CALL AddStudentRecord('female', 'group C', 'some college', 'standard', 'completed', 69, 90, 88);
 CALL AddStudentRecord('female', 'group B', 'master''s degree', 'standard', 'none', 90, 95, 93);
