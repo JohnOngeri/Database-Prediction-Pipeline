@@ -10,7 +10,9 @@ class StudentCreate(BaseModel):
 class Student(StudentCreate):
     student_id: int
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+
 
 class TestPreparationCreate(BaseModel):
     student_id: int

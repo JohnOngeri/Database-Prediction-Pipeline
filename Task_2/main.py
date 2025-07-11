@@ -2,15 +2,18 @@ from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 
-import models, schemas, crud
-from database import SessionLocal, engine, Base
+from Task_2 import models, schemas, crud
+from Task_2.database import SessionLocal, engine, Base
 
-
+# Create database tables
 Base.metadata.create_all(bind=engine)
 
+# FastAPI app instance
 app = FastAPI(title="Student Performance API")
-
-# Dependency
+@app.get("/")
+def read_root():
+    return {"message": "FastAPI is running and connected to MySQL!"}
+# Dependency to get DB session
 def get_db():
     db = SessionLocal()
     try:
@@ -39,3 +42,7 @@ def delete_student(student_id: int, db: Session = Depends(get_db)):
     if student is None:
         raise HTTPException(status_code=404, detail="Student not found")
     return {"message": "Deleted successfully"}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

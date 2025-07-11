@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Enum, ForeignKey
 from sqlalchemy.sql import func
 from sqlalchemy.types import DateTime
-from database import Base  
+from Task_2.database import Base  
 
 class Student(Base):
     __tablename__ = "Students"

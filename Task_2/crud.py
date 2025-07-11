@@ -1,6 +1,5 @@
 from sqlalchemy.orm import Session
-import models
-import schemas
+from Task_2 import models, schemas 
 
 # STUDENTS
 def create_student(db: Session, student: schemas.StudentCreate):
