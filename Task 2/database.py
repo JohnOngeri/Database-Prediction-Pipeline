@@ -2,9 +2,16 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-# Replace with your MySQL credentials
-SQLALCHEMY_DATABASE_URL = "mysql+mysqlconnector://root:%20%20%3F%3F@localhost/student_performance"
-SQLALCHEMY_TRACK_MODIFICATIONS = False
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+SQLALCHEMY_DATABASE_URL = (
+    f"mysql+mysqlconnector://{os.getenv('MYSQL_USER')}:{os.getenv('MYSQL_PASSWORD')}@"
+    f"{os.getenv('MYSQL_HOST')}/{os.getenv('MYSQL_DB')}"
+)
+
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
