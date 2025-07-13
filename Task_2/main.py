@@ -1,9 +1,9 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
-
-from Task_2 import models, schemas, crud
-from Task_2.database import SessionLocal, engine, Base
+from schemas import StudentData
+import models, schemas, crud
+from database import SessionLocal, engine, Base
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -42,6 +42,18 @@ def delete_student(student_id: int, db: Session = Depends(get_db)):
     if student is None:
         raise HTTPException(status_code=404, detail="Student not found")
     return {"message": "Deleted successfully"}
+    
+  
+
+@app.post("/predict/")
+def predict(student: StudentData):
+    try:
+        input_data = student.dict()
+        X = preprocess(input_data)
+        prediction = model.predict(X)[0]
+        return {"predicted_target": prediction}
+    except Exception as e:
+        return {"error": str(e)}
 
 if __name__ == "__main__":
     import uvicorn
