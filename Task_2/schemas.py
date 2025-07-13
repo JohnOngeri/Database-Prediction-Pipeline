@@ -11,6 +11,29 @@ class Student(StudentCreate):
     student_id: int
     class Config:
         from_attributes = True
+        from pydantic import BaseModel
+
+class StudentCreate(BaseModel):
+    gender: str
+    race_ethnicity: str
+    parental_level_of_education: str
+    lunch: str
+    reading_score: float
+    writing_score: float
+    math_score: float
+
+
+
+from pydantic import BaseModel
+
+class StudentInput(BaseModel):
+    gender: str
+    race_ethnicity: str
+    parental_level_of_education: str
+    lunch: str
+    reading_score: float
+    writing_score: float
+    math_score: float
 
 
 
