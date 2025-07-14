@@ -19,7 +19,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Constants
+#Constants
 DATA_PATH = r"C:\Users\HP\Database-Prediction-Pipeline\StudentsPerformance.csv"
 MODEL_DIR = "models"
 MODEL_PATH = os.path.join(MODEL_DIR, "student_performance_nn_model.h5")
