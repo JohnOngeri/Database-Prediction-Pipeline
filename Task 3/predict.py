@@ -353,4 +353,37 @@ def main():
         # Initialize clients and predictor
         logger.debug("Initializing components")
         api_client = PredictionClient()
-        predictor = NeuralNetworkPredictor(api_client)  
+        predictor = NeuralNetworkPredictor(api_client) 
+
+            # Fetch latest student
+        logger.debug("Fetching latest student record")
+        student = api_client.fetch_latest_student()
+        if not student:
+            logger.error("No valid student data available for prediction")
+            return
+        
+        logger.info(f"Processing student ID: {student.get('student_id')}")
+        logger.debug(f"Raw student record: {student}")
+    
+        # Prepare and predict
+        logger.debug("Preparing features")
+        features = predictor.prepare_features(student)
+        
+        logger.debug("Making prediction")
+        prediction = predictor.predict(features)
+        
+        # Save prediction
+        logger.debug("Saving prediction results")
+        if not api_client.save_prediction(student['student_id'], prediction):
+            logger.error("Failed to save prediction to database")
+        else:
+            logger.info("Prediction pipeline completed successfully")
+            
+    except Exception as e:
+        logger.error(f"Prediction pipeline failed: {str(e)}", exc_info=True)
+        # Consider adding notification/alerting here
+
+if __name__ == "__main__":
+    main()
+ 
+
