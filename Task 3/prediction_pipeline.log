@@ -1,0 +1,1055 @@
+2025-07-13 15:46:27,990 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 15:46:27,991 - __main__ - DEBUG - Initializing components
+2025-07-13 15:46:27,991 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 15:46:27,991 - __main__ - INFO - Loading model artifacts
+2025-07-13 15:46:27,991 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 15:46:27,995 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 15:46:28,152 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 15:46:28,158 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 15:46:28,190 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 15:46:28,192 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 15:46:28,192 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 15:46:28,192 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 15:46:28,192 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 15:46:28,193 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 15:46:28,196 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 15:46:30,252 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 15:46:30,504 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 15:46:30,506 - __main__ - DEBUG - Received 100 student records
+2025-07-13 15:46:30,506 - __main__ - INFO - Selected student ID: 4
+2025-07-13 15:46:30,507 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 15:46:30,507 - __main__ - INFO - Processing student ID: 4
+2025-07-13 15:46:30,507 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 15:46:30,508 - __main__ - DEBUG - Preparing features
+2025-07-13 15:46:30,508 - __main__ - INFO - Preparing features for prediction
+2025-07-13 15:46:30,508 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 15:46:30,508 - __main__ - ERROR - Feature preparation failed: 'NeuralNetworkPredictor' object has no attribute '_normalize_student_data'
+Traceback (most recent call last):
+  File "C:\Users\HP\Database-Prediction-Pipeline\Task 3\predict.py", line 195, in prepare_features
+    student_data = self._normalize_student_data(student_data)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NeuralNetworkPredictor' object has no attribute '_normalize_student_data'
+2025-07-13 15:46:30,509 - __main__ - ERROR - Prediction pipeline failed: 'NeuralNetworkPredictor' object has no attribute '_normalize_student_data'
+Traceback (most recent call last):
+  File "C:\Users\HP\Database-Prediction-Pipeline\Task 3\predict.py", line 291, in main
+    features = predictor.prepare_features(student)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Database-Prediction-Pipeline\Task 3\predict.py", line 195, in prepare_features
+    student_data = self._normalize_student_data(student_data)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NeuralNetworkPredictor' object has no attribute '_normalize_student_data'
+2025-07-13 15:50:35,345 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 15:50:35,346 - __main__ - DEBUG - Initializing components
+2025-07-13 15:50:35,346 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 15:50:35,348 - __main__ - INFO - Loading model artifacts
+2025-07-13 15:50:35,348 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 15:50:35,350 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 15:50:35,527 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 15:50:35,532 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 15:50:35,575 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 15:50:35,576 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 15:50:35,577 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 15:50:35,577 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 15:50:35,577 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 15:50:35,577 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 15:50:35,581 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 15:50:37,632 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 15:50:37,886 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 15:50:37,888 - __main__ - DEBUG - Received 100 student records
+2025-07-13 15:50:37,889 - __main__ - INFO - Selected student ID: 4
+2025-07-13 15:50:37,889 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 15:50:37,889 - __main__ - INFO - Processing student ID: 4
+2025-07-13 15:50:37,889 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 15:50:37,890 - __main__ - DEBUG - Preparing features
+2025-07-13 15:50:37,890 - __main__ - INFO - Preparing features for prediction
+2025-07-13 15:50:37,890 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 15:50:37,890 - __main__ - DEBUG - Normalizing student data
+2025-07-13 15:50:37,891 - __main__ - DEBUG - Normalized data: {'student_id': 4, 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'test_preparation': {'status': 'none'}, 'exams': {'math_score': 75, 'reading_score': 84, 'writing_score': 80}}
+2025-07-13 15:50:37,891 - __main__ - DEBUG - Constructed feature dict: {'gender': ['female'], 'race/ethnicity': ['group B'], 'parental level of education': ["bachelor's degree"], 'lunch': ['standard'], 'test preparation course': ['none'], 'math score': [75.0], 'reading score': [84.0], 'writing score': [80.0]}
+2025-07-13 15:50:37,941 - __main__ - DEBUG - Feature DataFrame:
+   gender race/ethnicity parental level of education  ... math score reading score  writing score
+0  female        group B           bachelor's degree  ...       75.0          84.0           80.0
+
+[1 rows x 8 columns]
+2025-07-13 15:50:37,943 - __main__ - DEBUG - Scaled numerical features: [[0.56635376 0.99948173 0.7657083 ]]
+2025-07-13 15:50:37,949 - __main__ - DEBUG - Encoded categorical features shape: (1, 17)
+2025-07-13 15:50:37,949 - __main__ - DEBUG - Final feature array shape: (1, 20)
+2025-07-13 15:50:37,952 - __main__ - DEBUG - Making prediction
+2025-07-13 15:50:37,953 - __main__ - INFO - Making prediction
+2025-07-13 15:50:37,954 - __main__ - DEBUG - Input features shape: (1, 20)
+2025-07-13 15:50:38,317 - __main__ - DEBUG - Raw prediction output: [[79.13972]]
+2025-07-13 15:50:38,319 - __main__ - INFO - Prediction result: 79.14
+2025-07-13 15:50:38,322 - __main__ - DEBUG - Saving prediction results
+2025-07-13 15:50:38,322 - __main__ - DEBUG - Saving prediction payload: {'student_id': 4, 'prediction': 79.13971710205078, 'prediction_date': '2025-07-13T15:50:38.322079'}
+2025-07-13 15:50:40,491 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 400 4990
+2025-07-13 15:50:40,492 - __main__ - ERROR - Failed to save prediction: 400 Client Error: Bad Request for url: http://localhost:8000/predictions/
+2025-07-13 15:50:40,492 - __main__ - ERROR - Failed to save prediction to database
+2025-07-13 15:55:43,197 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 15:55:43,197 - __main__ - DEBUG - Initializing components
+2025-07-13 15:55:43,197 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 15:55:43,198 - __main__ - INFO - Loading model artifacts
+2025-07-13 15:55:43,198 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 15:55:43,200 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 15:55:43,363 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 15:55:43,368 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 15:55:43,418 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 15:55:43,421 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 15:55:43,421 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 15:55:43,422 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 15:55:43,422 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 15:55:43,422 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 15:55:43,425 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 15:55:45,473 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 15:55:45,725 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 15:55:45,727 - __main__ - DEBUG - Received 100 student records
+2025-07-13 15:55:45,728 - __main__ - INFO - Selected student ID: 4
+2025-07-13 15:55:45,728 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 15:55:45,728 - __main__ - INFO - Processing student ID: 4
+2025-07-13 15:55:45,728 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 15:55:45,729 - __main__ - DEBUG - Preparing features
+2025-07-13 15:55:45,729 - __main__ - INFO - Preparing features for prediction
+2025-07-13 15:55:45,729 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 15:55:45,729 - __main__ - DEBUG - Normalizing student data
+2025-07-13 15:55:45,731 - __main__ - DEBUG - Normalized data: {'student_id': 4, 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'test_preparation': {'status': 'none'}, 'exams': {'math_score': 75, 'reading_score': 84, 'writing_score': 80}}
+2025-07-13 15:55:45,732 - __main__ - DEBUG - Constructed feature dict: {'gender': ['female'], 'race/ethnicity': ['group B'], 'parental level of education': ["bachelor's degree"], 'lunch': ['standard'], 'test preparation course': ['none'], 'math score': [75.0], 'reading score': [84.0], 'writing score': [80.0]}
+2025-07-13 15:55:45,748 - __main__ - DEBUG - Feature DataFrame:
+   gender race/ethnicity parental level of education  ... math score reading score  writing score
+0  female        group B           bachelor's degree  ...       75.0          84.0           80.0
+
+[1 rows x 8 columns]
+2025-07-13 15:55:45,753 - __main__ - DEBUG - Scaled numerical features: [[0.56635376 0.99948173 0.7657083 ]]
+2025-07-13 15:55:45,755 - __main__ - DEBUG - Encoded categorical features shape: (1, 17)
+2025-07-13 15:55:45,756 - __main__ - DEBUG - Final feature array shape: (1, 20)
+2025-07-13 15:55:45,756 - __main__ - DEBUG - Making prediction
+2025-07-13 15:55:45,756 - __main__ - INFO - Making prediction
+2025-07-13 15:55:45,757 - __main__ - DEBUG - Input features shape: (1, 20)
+2025-07-13 15:55:45,942 - __main__ - DEBUG - Raw prediction output: [[79.13972]]
+2025-07-13 15:55:45,943 - __main__ - INFO - Prediction result: 79.14
+2025-07-13 15:55:45,943 - __main__ - DEBUG - Saving prediction results
+2025-07-13 15:55:45,943 - __main__ - DEBUG - Saving prediction payload: {'student_id': 4, 'prediction': 79.13971710205078, 'prediction_date': '2025-07-13T15:55:45.943951'}
+2025-07-13 15:55:48,314 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 400 4990
+2025-07-13 15:55:48,316 - __main__ - ERROR - Failed to save prediction: 400 Client Error: Bad Request for url: http://localhost:8000/predictions/
+2025-07-13 15:55:48,316 - __main__ - ERROR - Failed to save prediction to database
+2025-07-13 15:59:14,708 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 15:59:14,708 - __main__ - DEBUG - Initializing components
+2025-07-13 15:59:14,708 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 15:59:14,709 - __main__ - INFO - Loading model artifacts
+2025-07-13 15:59:14,709 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 15:59:14,712 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 15:59:14,874 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 15:59:14,879 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 15:59:14,920 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 15:59:14,924 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 15:59:14,924 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 15:59:14,925 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 15:59:14,925 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 15:59:14,925 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 15:59:14,928 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 15:59:17,017 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 15:59:17,481 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 15:59:17,484 - __main__ - DEBUG - Received 100 student records
+2025-07-13 15:59:17,484 - __main__ - INFO - Selected student ID: 4
+2025-07-13 15:59:17,485 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 15:59:17,485 - __main__ - INFO - Processing student ID: 4
+2025-07-13 15:59:17,485 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 15:59:17,486 - __main__ - DEBUG - Preparing features
+2025-07-13 15:59:17,486 - __main__ - INFO - Preparing features for prediction
+2025-07-13 15:59:17,486 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 15:59:17,486 - __main__ - DEBUG - Normalizing student data
+2025-07-13 15:59:17,487 - __main__ - DEBUG - Normalized data: {'student_id': 4, 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'test_preparation': {'status': 'none'}, 'exams': {'math_score': 75, 'reading_score': 84, 'writing_score': 80}}
+2025-07-13 15:59:17,487 - __main__ - DEBUG - Constructed feature dict: {'gender': ['female'], 'race/ethnicity': ['group B'], 'parental level of education': ["bachelor's degree"], 'lunch': ['standard'], 'test preparation course': ['none'], 'math score': [75.0], 'reading score': [84.0], 'writing score': [80.0]}
+2025-07-13 15:59:17,506 - __main__ - DEBUG - Feature DataFrame:
+   gender race/ethnicity parental level of education  ... math score reading score  writing score
+0  female        group B           bachelor's degree  ...       75.0          84.0           80.0
+
+[1 rows x 8 columns]
+2025-07-13 15:59:17,512 - __main__ - DEBUG - Scaled numerical features: [[0.56635376 0.99948173 0.7657083 ]]
+2025-07-13 15:59:17,517 - __main__ - DEBUG - Encoded categorical features shape: (1, 17)
+2025-07-13 15:59:17,518 - __main__ - DEBUG - Final feature array shape: (1, 20)
+2025-07-13 15:59:17,519 - __main__ - DEBUG - Making prediction
+2025-07-13 15:59:17,520 - __main__ - INFO - Making prediction
+2025-07-13 15:59:17,521 - __main__ - DEBUG - Input features shape: (1, 20)
+2025-07-13 15:59:17,734 - __main__ - DEBUG - Raw prediction output: [[79.13972]]
+2025-07-13 15:59:17,734 - __main__ - INFO - Prediction result: 79.14
+2025-07-13 15:59:17,735 - __main__ - DEBUG - Saving prediction results
+2025-07-13 15:59:17,735 - __main__ - ERROR - Prediction pipeline failed: 'PredictionClient' object has no attribute 'save_prediction'
+Traceback (most recent call last):
+  File "C:\Users\HP\Database-Prediction-Pipeline\Task 3\predict.py", line 300, in main
+    if not api_client.save_prediction(student['student_id'], prediction):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PredictionClient' object has no attribute 'save_prediction'
+2025-07-13 16:03:21,235 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 16:03:21,236 - __main__ - DEBUG - Initializing components
+2025-07-13 16:03:21,236 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 16:03:21,236 - __main__ - INFO - Loading model artifacts
+2025-07-13 16:03:21,236 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 16:03:21,239 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 16:03:21,402 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 16:03:21,409 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 16:03:21,446 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 16:03:21,452 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 16:03:21,457 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 16:03:21,458 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 16:03:21,458 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 16:03:21,458 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 16:03:21,461 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 16:03:23,531 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 16:03:23,794 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 16:03:23,796 - __main__ - DEBUG - Received 100 student records
+2025-07-13 16:03:23,796 - __main__ - INFO - Selected student ID: 4
+2025-07-13 16:03:23,796 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:03:23,797 - __main__ - INFO - Processing student ID: 4
+2025-07-13 16:03:23,797 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:03:23,797 - __main__ - DEBUG - Preparing features
+2025-07-13 16:03:23,798 - __main__ - INFO - Preparing features for prediction
+2025-07-13 16:03:23,798 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:03:23,798 - __main__ - DEBUG - Normalizing student data
+2025-07-13 16:03:23,798 - __main__ - DEBUG - Normalized data: {'student_id': 4, 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'test_preparation': {'status': 'none'}, 'exams': {'math_score': 75, 'reading_score': 84, 'writing_score': 80}}
+2025-07-13 16:03:23,799 - __main__ - DEBUG - Constructed feature dict: {'gender': ['female'], 'race/ethnicity': ['group B'], 'parental level of education': ["bachelor's degree"], 'lunch': ['standard'], 'test preparation course': ['none'], 'math score': [75.0], 'reading score': [84.0], 'writing score': [80.0]}
+2025-07-13 16:03:23,824 - __main__ - DEBUG - Feature DataFrame:
+   gender race/ethnicity parental level of education  ... math score reading score  writing score
+0  female        group B           bachelor's degree  ...       75.0          84.0           80.0
+
+[1 rows x 8 columns]
+2025-07-13 16:03:23,833 - __main__ - DEBUG - Scaled numerical features: [[0.56635376 0.99948173 0.7657083 ]]
+2025-07-13 16:03:23,838 - __main__ - DEBUG - Encoded categorical features shape: (1, 17)
+2025-07-13 16:03:23,842 - __main__ - DEBUG - Final feature array shape: (1, 20)
+2025-07-13 16:03:23,843 - __main__ - DEBUG - Making prediction
+2025-07-13 16:03:23,843 - __main__ - INFO - Making prediction
+2025-07-13 16:03:23,843 - __main__ - DEBUG - Input features shape: (1, 20)
+2025-07-13 16:03:24,036 - __main__ - DEBUG - Raw prediction output: [[79.13972]]
+2025-07-13 16:03:24,037 - __main__ - INFO - Prediction result: 79.14
+2025-07-13 16:03:24,037 - __main__ - DEBUG - Saving prediction results
+2025-07-13 16:03:26,339 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 400 4990
+2025-07-13 16:03:26,341 - __main__ - ERROR - Failed to save prediction to database
+2025-07-13 16:06:07,614 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 16:06:07,614 - __main__ - DEBUG - Initializing components
+2025-07-13 16:06:07,615 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 16:06:07,615 - __main__ - INFO - Loading model artifacts
+2025-07-13 16:06:07,615 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 16:06:07,617 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 16:06:07,771 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 16:06:07,776 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 16:06:07,826 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 16:06:07,827 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 16:06:07,828 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 16:06:07,828 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 16:06:07,828 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 16:06:07,828 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 16:06:07,831 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 16:06:09,885 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 16:06:10,138 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 16:06:10,140 - __main__ - DEBUG - Received 100 student records
+2025-07-13 16:06:10,141 - __main__ - INFO - Selected student ID: 4
+2025-07-13 16:06:10,141 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:06:10,142 - __main__ - INFO - Processing student ID: 4
+2025-07-13 16:06:10,142 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:06:10,142 - __main__ - DEBUG - Preparing features
+2025-07-13 16:06:10,142 - __main__ - INFO - Preparing features for prediction
+2025-07-13 16:06:10,143 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:06:10,143 - __main__ - DEBUG - Normalizing student data
+2025-07-13 16:06:10,143 - __main__ - DEBUG - Normalized data: {'student_id': 4, 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'test_preparation': {'status': 'none'}, 'exams': {'math_score': 75, 'reading_score': 84, 'writing_score': 80}}
+2025-07-13 16:06:10,144 - __main__ - DEBUG - Constructed feature dict: {'gender': ['female'], 'race/ethnicity': ['group B'], 'parental level of education': ["bachelor's degree"], 'lunch': ['standard'], 'test preparation course': ['none'], 'math score': [75.0], 'reading score': [84.0], 'writing score': [80.0]}
+2025-07-13 16:06:10,162 - __main__ - DEBUG - Feature DataFrame:
+   gender race/ethnicity parental level of education  ... math score reading score  writing score
+0  female        group B           bachelor's degree  ...       75.0          84.0           80.0
+
+[1 rows x 8 columns]
+2025-07-13 16:06:10,167 - __main__ - DEBUG - Scaled numerical features: [[0.56635376 0.99948173 0.7657083 ]]
+2025-07-13 16:06:10,172 - __main__ - DEBUG - Encoded categorical features shape: (1, 17)
+2025-07-13 16:06:10,172 - __main__ - DEBUG - Final feature array shape: (1, 20)
+2025-07-13 16:06:10,172 - __main__ - DEBUG - Making prediction
+2025-07-13 16:06:10,173 - __main__ - INFO - Making prediction
+2025-07-13 16:06:10,173 - __main__ - DEBUG - Input features shape: (1, 20)
+2025-07-13 16:06:10,341 - __main__ - DEBUG - Raw prediction output: [[79.13972]]
+2025-07-13 16:06:10,341 - __main__ - INFO - Prediction result: 79.14
+2025-07-13 16:06:10,341 - __main__ - DEBUG - Saving prediction results
+2025-07-13 16:06:10,342 - __main__ - ERROR - Prediction pipeline failed: 'PredictionClient' object has no attribute 'save_prediction'
+Traceback (most recent call last):
+  File "C:\Users\HP\Database-Prediction-Pipeline\Task 3\predict.py", line 332, in main
+    if not api_client.save_prediction(student['student_id'], prediction):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PredictionClient' object has no attribute 'save_prediction'
+2025-07-13 16:12:41,812 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 16:12:41,812 - __main__ - DEBUG - Initializing components
+2025-07-13 16:12:41,813 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 16:12:41,813 - __main__ - INFO - Loading model artifacts
+2025-07-13 16:12:41,813 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 16:12:41,815 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 16:12:41,984 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 16:12:41,989 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 16:12:42,026 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 16:12:42,028 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 16:12:42,028 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 16:12:42,028 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 16:12:42,029 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 16:12:42,029 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 16:12:42,036 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 16:12:44,103 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 16:12:44,356 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 16:12:44,359 - __main__ - DEBUG - Received 100 student records
+2025-07-13 16:12:44,360 - __main__ - INFO - Selected student ID: 4
+2025-07-13 16:12:44,360 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:12:44,360 - __main__ - INFO - Processing student ID: 4
+2025-07-13 16:12:44,361 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:12:44,361 - __main__ - DEBUG - Preparing features
+2025-07-13 16:12:44,361 - __main__ - INFO - Preparing features for prediction
+2025-07-13 16:12:44,361 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:12:44,361 - __main__ - DEBUG - Normalizing student data
+2025-07-13 16:12:44,362 - __main__ - DEBUG - Normalized data: {'student_id': 4, 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'test_preparation': {'status': 'none'}, 'exams': {'math_score': 75, 'reading_score': 84, 'writing_score': 80}}
+2025-07-13 16:12:44,362 - __main__ - DEBUG - Constructed feature dict: {'gender': ['female'], 'race/ethnicity': ['group B'], 'parental level of education': ["bachelor's degree"], 'lunch': ['standard'], 'test preparation course': ['none'], 'math score': [75.0], 'reading score': [84.0], 'writing score': [80.0]}
+2025-07-13 16:12:44,382 - __main__ - DEBUG - Feature DataFrame:
+   gender race/ethnicity parental level of education  ... math score reading score  writing score
+0  female        group B           bachelor's degree  ...       75.0          84.0           80.0
+
+[1 rows x 8 columns]
+2025-07-13 16:12:44,387 - __main__ - DEBUG - Scaled numerical features: [[0.56635376 0.99948173 0.7657083 ]]
+2025-07-13 16:12:44,391 - __main__ - DEBUG - Encoded categorical features shape: (1, 17)
+2025-07-13 16:12:44,394 - __main__ - DEBUG - Final feature array shape: (1, 20)
+2025-07-13 16:12:44,396 - __main__ - DEBUG - Making prediction
+2025-07-13 16:12:44,402 - __main__ - INFO - Making prediction
+2025-07-13 16:12:44,402 - __main__ - DEBUG - Input features shape: (1, 20)
+2025-07-13 16:12:44,582 - __main__ - DEBUG - Raw prediction output: [[79.13972]]
+2025-07-13 16:12:44,583 - __main__ - INFO - Prediction result: 79.14
+2025-07-13 16:12:44,584 - __main__ - DEBUG - Saving prediction results
+2025-07-13 16:12:44,584 - __main__ - DEBUG - Saving prediction with payload: {'student_id': 4, 'prediction': 79.13971710205078, 'prediction_date': '2025-07-13T16:12:44.584145'}
+2025-07-13 16:12:46,831 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 400 4990
+2025-07-13 16:12:46,832 - __main__ - DEBUG - Received response with status code: 400
+2025-07-13 16:12:46,833 - __main__ - DEBUG - Response headers: {'date': 'Sun, 13 Jul 2025 13:12:44 GMT', 'server': 'uvicorn', 'content-length': '4990', 'content-type': 'application/json'}
+2025-07-13 16:12:46,833 - __main__ - DEBUG - Response content: b'{"detail":"400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: maximum recursion depth exceeded while calling a Python object"}'
+2025-07-13 16:12:46,834 - __main__ - ERROR - Failed to save prediction with status code: 400
+2025-07-13 16:12:46,835 - __main__ - ERROR - Response content: b'{"detail":"400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: maximum recursion depth exceeded while calling a Python object"}'
+2025-07-13 16:12:46,836 - __main__ - ERROR - Failed to save prediction to database
+2025-07-13 16:18:28,966 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 16:18:28,966 - __main__ - DEBUG - Initializing components
+2025-07-13 16:18:28,967 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 16:18:28,967 - __main__ - INFO - Loading model artifacts
+2025-07-13 16:18:28,967 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 16:18:28,983 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 16:18:29,145 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 16:18:29,149 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 16:18:29,216 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 16:18:29,217 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 16:18:29,218 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 16:18:29,219 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 16:18:29,219 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 16:18:29,219 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 16:18:29,221 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 16:18:31,293 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 16:18:31,485 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 16:18:31,487 - __main__ - DEBUG - Received 100 student records
+2025-07-13 16:18:31,488 - __main__ - INFO - Selected student ID: 4
+2025-07-13 16:18:31,488 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:18:31,488 - __main__ - INFO - Processing student ID: 4
+2025-07-13 16:18:31,488 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:18:31,489 - __main__ - DEBUG - Preparing features
+2025-07-13 16:18:31,489 - __main__ - INFO - Preparing features for prediction
+2025-07-13 16:18:31,489 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:18:31,489 - __main__ - DEBUG - Normalizing student data
+2025-07-13 16:18:31,489 - __main__ - DEBUG - Normalized data: {'student_id': 4, 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'test_preparation': {'status': 'none'}, 'exams': {'math_score': 75, 'reading_score': 84, 'writing_score': 80}}
+2025-07-13 16:18:31,489 - __main__ - DEBUG - Constructed feature dict: {'gender': ['female'], 'race/ethnicity': ['group B'], 'parental level of education': ["bachelor's degree"], 'lunch': ['standard'], 'test preparation course': ['none'], 'math score': [75.0], 'reading score': [84.0], 'writing score': [80.0]}
+2025-07-13 16:18:31,521 - __main__ - DEBUG - Feature DataFrame:
+   gender race/ethnicity parental level of education  ... math score reading score  writing score
+0  female        group B           bachelor's degree  ...       75.0          84.0           80.0
+
+[1 rows x 8 columns]
+2025-07-13 16:18:31,523 - __main__ - DEBUG - Scaled numerical features: [[0.56635376 0.99948173 0.7657083 ]]
+2025-07-13 16:18:31,526 - __main__ - DEBUG - Encoded categorical features shape: (1, 17)
+2025-07-13 16:18:31,526 - __main__ - DEBUG - Final feature array shape: (1, 20)
+2025-07-13 16:18:31,526 - __main__ - DEBUG - Making prediction
+2025-07-13 16:18:31,526 - __main__ - INFO - Making prediction
+2025-07-13 16:18:31,527 - __main__ - DEBUG - Input features shape: (1, 20)
+2025-07-13 16:18:31,759 - __main__ - DEBUG - Raw prediction output: [[79.13972]]
+2025-07-13 16:18:31,760 - __main__ - INFO - Prediction result: 79.14
+2025-07-13 16:18:31,760 - __main__ - DEBUG - Saving prediction results
+2025-07-13 16:18:31,760 - __main__ - ERROR - Prediction pipeline failed: 'PredictionClient' object has no attribute 'save_prediction'
+Traceback (most recent call last):
+  File "C:\Users\HP\Database-Prediction-Pipeline\Task 3\predict.py", line 340, in main
+    if not api_client.save_prediction(student['student_id'], prediction):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'PredictionClient' object has no attribute 'save_prediction'
+2025-07-13 16:19:38,308 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 16:19:38,309 - __main__ - DEBUG - Initializing components
+2025-07-13 16:19:38,309 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 16:19:38,309 - __main__ - INFO - Loading model artifacts
+2025-07-13 16:19:38,309 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 16:19:38,312 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 16:19:38,411 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 16:19:38,415 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 16:19:38,429 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 16:19:38,430 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 16:19:38,430 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 16:19:38,430 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 16:19:38,430 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 16:19:38,431 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 16:19:38,433 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 16:19:40,496 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 16:19:40,757 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 16:19:40,758 - __main__ - DEBUG - Received 100 student records
+2025-07-13 16:19:40,759 - __main__ - INFO - Selected student ID: 4
+2025-07-13 16:19:40,759 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:19:40,759 - __main__ - INFO - Processing student ID: 4
+2025-07-13 16:19:40,759 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:19:40,760 - __main__ - DEBUG - Preparing features
+2025-07-13 16:19:40,760 - __main__ - INFO - Preparing features for prediction
+2025-07-13 16:19:40,760 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:19:40,760 - __main__ - DEBUG - Normalizing student data
+2025-07-13 16:19:40,760 - __main__ - DEBUG - Normalized data: {'student_id': 4, 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'test_preparation': {'status': 'none'}, 'exams': {'math_score': 75, 'reading_score': 84, 'writing_score': 80}}
+2025-07-13 16:19:40,760 - __main__ - DEBUG - Constructed feature dict: {'gender': ['female'], 'race/ethnicity': ['group B'], 'parental level of education': ["bachelor's degree"], 'lunch': ['standard'], 'test preparation course': ['none'], 'math score': [75.0], 'reading score': [84.0], 'writing score': [80.0]}
+2025-07-13 16:19:40,769 - __main__ - DEBUG - Feature DataFrame:
+   gender race/ethnicity parental level of education  ... math score reading score  writing score
+0  female        group B           bachelor's degree  ...       75.0          84.0           80.0
+
+[1 rows x 8 columns]
+2025-07-13 16:19:40,770 - __main__ - DEBUG - Scaled numerical features: [[0.56635376 0.99948173 0.7657083 ]]
+2025-07-13 16:19:40,772 - __main__ - DEBUG - Encoded categorical features shape: (1, 17)
+2025-07-13 16:19:40,772 - __main__ - DEBUG - Final feature array shape: (1, 20)
+2025-07-13 16:19:40,772 - __main__ - DEBUG - Making prediction
+2025-07-13 16:19:40,772 - __main__ - INFO - Making prediction
+2025-07-13 16:19:40,773 - __main__ - DEBUG - Input features shape: (1, 20)
+2025-07-13 16:19:40,883 - __main__ - DEBUG - Raw prediction output: [[79.13972]]
+2025-07-13 16:19:40,884 - __main__ - INFO - Prediction result: 79.14
+2025-07-13 16:19:40,884 - __main__ - DEBUG - Saving prediction results
+2025-07-13 16:19:40,884 - __main__ - DEBUG - Attempt 1: Saving prediction for student 4
+2025-07-13 16:19:42,222 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 400 4990
+2025-07-13 16:19:42,223 - __main__ - ERROR - API validation error: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 
+2025-07-13 16:19:42,223 - __main__ - ERROR - API request failed with status 400
+2025-07-13 16:19:43,224 - __main__ - DEBUG - Attempt 2: Saving prediction for student 4
+2025-07-13 16:19:44,304 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 400 4990
+2025-07-13 16:19:44,305 - __main__ - ERROR - API validation error: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 
+2025-07-13 16:19:44,305 - __main__ - ERROR - API request failed with status 400
+2025-07-13 16:19:46,306 - __main__ - DEBUG - Attempt 3: Saving prediction for student 4
+2025-07-13 16:19:47,394 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 400 4990
+2025-07-13 16:19:47,395 - __main__ - ERROR - API validation error: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 
+2025-07-13 16:19:47,395 - __main__ - ERROR - API request failed with status 400
+2025-07-13 16:19:51,396 - __main__ - ERROR - Failed to save prediction after 3 attempts
+2025-07-13 16:19:51,396 - __main__ - ERROR - Failed to save prediction to database
+2025-07-13 16:25:06,548 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 16:25:06,548 - __main__ - DEBUG - Initializing components
+2025-07-13 16:25:06,549 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 16:25:06,549 - __main__ - INFO - Loading model artifacts
+2025-07-13 16:25:06,549 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 16:25:06,563 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 16:25:06,739 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 16:25:06,747 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 16:25:06,775 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 16:25:06,775 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 16:25:06,775 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 16:25:06,776 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 16:25:06,776 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 16:25:06,776 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 16:25:06,779 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 16:25:08,843 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 16:25:09,022 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 16:25:09,023 - __main__ - DEBUG - Received 100 student records
+2025-07-13 16:25:09,024 - __main__ - INFO - Selected student ID: 4
+2025-07-13 16:25:09,024 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:25:09,024 - __main__ - INFO - Processing student ID: 4
+2025-07-13 16:25:09,024 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:25:09,024 - __main__ - DEBUG - Preparing features
+2025-07-13 16:25:09,025 - __main__ - INFO - Preparing features for prediction
+2025-07-13 16:25:09,025 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:25:09,025 - __main__ - DEBUG - Normalizing student data
+2025-07-13 16:25:09,025 - __main__ - DEBUG - Normalized data: {'student_id': 4, 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'test_preparation': {'status': 'none'}, 'exams': {'math_score': 75, 'reading_score': 84, 'writing_score': 80}}
+2025-07-13 16:25:09,025 - __main__ - DEBUG - Constructed feature dict: {'gender': ['female'], 'race/ethnicity': ['group B'], 'parental level of education': ["bachelor's degree"], 'lunch': ['standard'], 'test preparation course': ['none'], 'math score': [75.0], 'reading score': [84.0], 'writing score': [80.0]}
+2025-07-13 16:25:09,033 - __main__ - DEBUG - Feature DataFrame:
+   gender race/ethnicity  ... reading score writing score
+0  female        group B  ...          84.0          80.0
+
+[1 rows x 8 columns]
+2025-07-13 16:25:09,035 - __main__ - DEBUG - Scaled numerical features: [[0.56635376 0.99948173 0.7657083 ]]
+2025-07-13 16:25:09,039 - __main__ - DEBUG - Encoded categorical features shape: (1, 17)
+2025-07-13 16:25:09,039 - __main__ - DEBUG - Final feature array shape: (1, 20)
+2025-07-13 16:25:09,039 - __main__ - DEBUG - Making prediction
+2025-07-13 16:25:09,040 - __main__ - INFO - Making prediction
+2025-07-13 16:25:09,040 - __main__ - DEBUG - Input features shape: (1, 20)
+2025-07-13 16:25:09,327 - __main__ - DEBUG - Raw prediction output: [[79.13972]]
+2025-07-13 16:25:09,328 - __main__ - INFO - Prediction result: 79.14
+2025-07-13 16:25:09,328 - __main__ - DEBUG - Saving prediction results
+2025-07-13 16:25:09,328 - __main__ - DEBUG - Attempt 1: Saving prediction for student 4
+2025-07-13 16:25:09,811 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 400 4990
+2025-07-13 16:25:09,812 - __main__ - ERROR - API validation error: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 
+2025-07-13 16:25:09,812 - __main__ - ERROR - API request failed with status 400
+2025-07-13 16:25:10,814 - __main__ - DEBUG - Attempt 2: Saving prediction for student 4
+2025-07-13 16:25:11,187 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 400 4990
+2025-07-13 16:25:11,187 - __main__ - ERROR - API validation error: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 
+2025-07-13 16:25:11,188 - __main__ - ERROR - API request failed with status 400
+2025-07-13 16:25:13,189 - __main__ - DEBUG - Attempt 3: Saving prediction for student 4
+2025-07-13 16:25:13,529 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 400 4990
+2025-07-13 16:25:13,530 - __main__ - ERROR - API validation error: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 400: 
+2025-07-13 16:25:13,530 - __main__ - ERROR - API request failed with status 400
+2025-07-13 16:25:17,531 - __main__ - ERROR - Failed to save prediction after 3 attempts
+2025-07-13 16:25:17,532 - __main__ - ERROR - Failed to save prediction to database
+2025-07-13 16:36:23,827 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 16:36:23,828 - __main__ - DEBUG - Initializing components
+2025-07-13 16:36:23,828 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 16:36:23,828 - __main__ - INFO - Loading model artifacts
+2025-07-13 16:36:23,828 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 16:36:23,839 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 16:36:24,001 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 16:36:24,005 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 16:36:24,034 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 16:36:24,034 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 16:36:24,036 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 16:36:24,036 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 16:36:24,036 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 16:36:24,036 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 16:36:24,038 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 16:36:26,091 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 16:36:26,278 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 16:36:26,280 - __main__ - DEBUG - Received 100 student records
+2025-07-13 16:36:26,280 - __main__ - INFO - Selected student ID: 4
+2025-07-13 16:36:26,280 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:36:26,281 - __main__ - INFO - Processing student ID: 4
+2025-07-13 16:36:26,281 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:36:26,281 - __main__ - DEBUG - Preparing features
+2025-07-13 16:36:26,281 - __main__ - INFO - Preparing features for prediction
+2025-07-13 16:36:26,281 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:36:26,281 - __main__ - DEBUG - Normalizing student data
+2025-07-13 16:36:26,282 - __main__ - DEBUG - Normalized data: {'student_id': 4, 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'test_preparation': {'status': 'none'}, 'exams': {'math_score': 75, 'reading_score': 84, 'writing_score': 80}}
+2025-07-13 16:36:26,282 - __main__ - DEBUG - Constructed feature dict: {'gender': ['female'], 'race/ethnicity': ['group B'], 'parental level of education': ["bachelor's degree"], 'lunch': ['standard'], 'test preparation course': ['none'], 'math score': [75.0], 'reading score': [84.0], 'writing score': [80.0]}
+2025-07-13 16:36:26,292 - __main__ - DEBUG - Feature DataFrame:
+   gender race/ethnicity  ... reading score writing score
+0  female        group B  ...          84.0          80.0
+
+[1 rows x 8 columns]
+2025-07-13 16:36:26,294 - __main__ - DEBUG - Scaled numerical features: [[0.56635376 0.99948173 0.7657083 ]]
+2025-07-13 16:36:26,297 - __main__ - DEBUG - Encoded categorical features shape: (1, 17)
+2025-07-13 16:36:26,297 - __main__ - DEBUG - Final feature array shape: (1, 20)
+2025-07-13 16:36:26,297 - __main__ - DEBUG - Making prediction
+2025-07-13 16:36:26,297 - __main__ - INFO - Making prediction
+2025-07-13 16:36:26,297 - __main__ - DEBUG - Input features shape: (1, 20)
+2025-07-13 16:36:26,564 - __main__ - DEBUG - Raw prediction output: [[79.13972]]
+2025-07-13 16:36:26,565 - __main__ - INFO - Prediction result: 79.14
+2025-07-13 16:36:26,565 - __main__ - DEBUG - Saving prediction results
+2025-07-13 16:36:26,565 - __main__ - DEBUG - Attempt 1: Saving prediction for student 4
+2025-07-13 16:36:26,574 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 400 40
+2025-07-13 16:36:26,575 - __main__ - ERROR - API validation error: Failed to create prediction
+2025-07-13 16:36:26,575 - __main__ - ERROR - API request failed with status 400
+2025-07-13 16:36:27,576 - __main__ - DEBUG - Attempt 2: Saving prediction for student 4
+2025-07-13 16:36:27,582 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 400 40
+2025-07-13 16:36:27,582 - __main__ - ERROR - API validation error: Failed to create prediction
+2025-07-13 16:36:27,583 - __main__ - ERROR - API request failed with status 400
+2025-07-13 16:36:29,584 - __main__ - DEBUG - Attempt 3: Saving prediction for student 4
+2025-07-13 16:36:29,588 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 400 40
+2025-07-13 16:36:29,588 - __main__ - ERROR - API validation error: Failed to create prediction
+2025-07-13 16:36:29,589 - __main__ - ERROR - API request failed with status 400
+2025-07-13 16:36:33,590 - __main__ - ERROR - Failed to save prediction after 3 attempts
+2025-07-13 16:36:33,590 - __main__ - ERROR - Failed to save prediction to database
+2025-07-13 16:45:42,081 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 16:45:42,081 - __main__ - DEBUG - Initializing components
+2025-07-13 16:45:42,081 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 16:45:42,081 - __main__ - INFO - Loading model artifacts
+2025-07-13 16:45:42,081 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 16:45:42,083 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 16:45:42,168 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 16:45:42,171 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 16:45:42,188 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 16:45:42,189 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 16:45:42,189 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 16:45:42,189 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 16:45:42,189 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 16:45:42,190 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 16:45:42,191 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 16:45:44,245 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 16:45:44,406 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 16:45:44,407 - __main__ - DEBUG - Received 100 student records
+2025-07-13 16:45:44,408 - __main__ - INFO - Selected student ID: 4
+2025-07-13 16:45:44,408 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:45:44,408 - __main__ - INFO - Processing student ID: 4
+2025-07-13 16:45:44,408 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:45:44,408 - __main__ - DEBUG - Preparing features
+2025-07-13 16:45:44,408 - __main__ - INFO - Preparing features for prediction
+2025-07-13 16:45:44,409 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:45:44,409 - __main__ - DEBUG - Normalizing student data
+2025-07-13 16:45:44,409 - __main__ - DEBUG - Normalized data: {'student_id': 4, 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'test_preparation': {'status': 'none'}, 'exams': {'math_score': 75, 'reading_score': 84, 'writing_score': 80}}
+2025-07-13 16:45:44,409 - __main__ - DEBUG - Constructed feature dict: {'gender': ['female'], 'race/ethnicity': ['group B'], 'parental level of education': ["bachelor's degree"], 'lunch': ['standard'], 'test preparation course': ['none'], 'math score': [75.0], 'reading score': [84.0], 'writing score': [80.0]}
+2025-07-13 16:45:44,418 - __main__ - DEBUG - Feature DataFrame:
+   gender  ... writing score
+0  female  ...          80.0
+
+[1 rows x 8 columns]
+2025-07-13 16:45:44,421 - __main__ - DEBUG - Scaled numerical features: [[0.56635376 0.99948173 0.7657083 ]]
+2025-07-13 16:45:44,423 - __main__ - DEBUG - Encoded categorical features shape: (1, 17)
+2025-07-13 16:45:44,424 - __main__ - DEBUG - Final feature array shape: (1, 20)
+2025-07-13 16:45:44,424 - __main__ - DEBUG - Making prediction
+2025-07-13 16:45:44,424 - __main__ - INFO - Making prediction
+2025-07-13 16:45:44,425 - __main__ - DEBUG - Input features shape: (1, 20)
+2025-07-13 16:45:44,525 - __main__ - DEBUG - Raw prediction output: [[79.13972]]
+2025-07-13 16:45:44,525 - __main__ - INFO - Prediction result: 79.14
+2025-07-13 16:45:44,525 - __main__ - DEBUG - Saving prediction results
+2025-07-13 16:45:44,525 - __main__ - DEBUG - Attempt 1: Saving prediction for student 4
+2025-07-13 16:45:44,530 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 422 177
+2025-07-13 16:45:44,530 - __main__ - ERROR - API request failed with status 422
+2025-07-13 16:45:45,531 - __main__ - DEBUG - Attempt 2: Saving prediction for student 4
+2025-07-13 16:45:45,535 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 422 177
+2025-07-13 16:45:45,535 - __main__ - ERROR - API request failed with status 422
+2025-07-13 16:45:47,537 - __main__ - DEBUG - Attempt 3: Saving prediction for student 4
+2025-07-13 16:45:47,544 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 422 177
+2025-07-13 16:45:47,545 - __main__ - ERROR - API request failed with status 422
+2025-07-13 16:45:51,547 - __main__ - ERROR - Failed to save prediction after 3 attempts
+2025-07-13 16:45:51,548 - __main__ - ERROR - Failed to save prediction to database
+2025-07-13 16:47:02,939 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 16:47:02,939 - __main__ - DEBUG - Initializing components
+2025-07-13 16:47:02,939 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 16:47:02,940 - __main__ - INFO - Loading model artifacts
+2025-07-13 16:47:02,940 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 16:47:02,941 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 16:47:03,028 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 16:47:03,032 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 16:47:03,045 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 16:47:03,046 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 16:47:03,047 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 16:47:03,047 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 16:47:03,047 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 16:47:03,047 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 16:47:03,050 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 16:47:05,096 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 16:47:05,273 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 16:47:05,274 - __main__ - DEBUG - Received 100 student records
+2025-07-13 16:47:05,274 - __main__ - INFO - Selected student ID: 4
+2025-07-13 16:47:05,275 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:47:05,275 - __main__ - INFO - Processing student ID: 4
+2025-07-13 16:47:05,275 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:47:05,275 - __main__ - DEBUG - Preparing features
+2025-07-13 16:47:05,275 - __main__ - INFO - Preparing features for prediction
+2025-07-13 16:47:05,275 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:47:05,275 - __main__ - DEBUG - Normalizing student data
+2025-07-13 16:47:05,276 - __main__ - DEBUG - Normalized data: {'student_id': 4, 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'test_preparation': {'status': 'none'}, 'exams': {'math_score': 75, 'reading_score': 84, 'writing_score': 80}}
+2025-07-13 16:47:05,276 - __main__ - DEBUG - Constructed feature dict: {'gender': ['female'], 'race/ethnicity': ['group B'], 'parental level of education': ["bachelor's degree"], 'lunch': ['standard'], 'test preparation course': ['none'], 'math score': [75.0], 'reading score': [84.0], 'writing score': [80.0]}
+2025-07-13 16:47:05,283 - __main__ - DEBUG - Feature DataFrame:
+   gender race/ethnicity  ... reading score writing score
+0  female        group B  ...          84.0          80.0
+
+[1 rows x 8 columns]
+2025-07-13 16:47:05,284 - __main__ - DEBUG - Scaled numerical features: [[0.56635376 0.99948173 0.7657083 ]]
+2025-07-13 16:47:05,289 - __main__ - DEBUG - Encoded categorical features shape: (1, 17)
+2025-07-13 16:47:05,289 - __main__ - DEBUG - Final feature array shape: (1, 20)
+2025-07-13 16:47:05,289 - __main__ - DEBUG - Making prediction
+2025-07-13 16:47:05,290 - __main__ - INFO - Making prediction
+2025-07-13 16:47:05,290 - __main__ - DEBUG - Input features shape: (1, 20)
+2025-07-13 16:47:05,405 - __main__ - DEBUG - Raw prediction output: [[79.13972]]
+2025-07-13 16:47:05,405 - __main__ - INFO - Prediction result: 79.14
+2025-07-13 16:47:05,406 - __main__ - DEBUG - Saving prediction results
+2025-07-13 16:47:05,406 - __main__ - DEBUG - Attempt 1: Saving prediction for student 4
+2025-07-13 16:47:05,413 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 422 177
+2025-07-13 16:47:05,414 - __main__ - ERROR - API request failed with status 422
+2025-07-13 16:47:06,416 - __main__ - DEBUG - Attempt 2: Saving prediction for student 4
+2025-07-13 16:47:06,424 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 422 177
+2025-07-13 16:47:06,426 - __main__ - ERROR - API request failed with status 422
+2025-07-13 16:47:08,428 - __main__ - DEBUG - Attempt 3: Saving prediction for student 4
+2025-07-13 16:47:08,435 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 422 177
+2025-07-13 16:47:08,436 - __main__ - ERROR - API request failed with status 422
+2025-07-13 16:47:12,437 - __main__ - ERROR - Failed to save prediction after 3 attempts
+2025-07-13 16:47:12,438 - __main__ - ERROR - Failed to save prediction to database
+2025-07-13 16:53:30,620 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 16:53:30,621 - __main__ - DEBUG - Initializing components
+2025-07-13 16:53:30,621 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 16:53:30,621 - __main__ - INFO - Loading model artifacts
+2025-07-13 16:53:30,621 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 16:53:30,623 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 16:53:30,711 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 16:53:30,715 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 16:53:30,731 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 16:53:30,733 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 16:53:30,734 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 16:53:30,734 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 16:53:30,734 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 16:53:30,734 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 16:53:30,735 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 16:53:32,790 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 16:53:33,009 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 16:53:33,011 - __main__ - DEBUG - Received 100 student records
+2025-07-13 16:53:33,011 - __main__ - INFO - Selected student ID: 4
+2025-07-13 16:53:33,012 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:53:33,012 - __main__ - INFO - Processing student ID: 4
+2025-07-13 16:53:33,012 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:53:33,012 - __main__ - DEBUG - Preparing features
+2025-07-13 16:53:33,012 - __main__ - INFO - Preparing features for prediction
+2025-07-13 16:53:33,013 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:53:33,013 - __main__ - DEBUG - Normalizing student data
+2025-07-13 16:53:33,013 - __main__ - DEBUG - Normalized data: {'student_id': 4, 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'test_preparation': {'status': 'none'}, 'exams': {'math_score': 75, 'reading_score': 84, 'writing_score': 80}}
+2025-07-13 16:53:33,013 - __main__ - DEBUG - Constructed feature dict: {'gender': ['female'], 'race/ethnicity': ['group B'], 'parental level of education': ["bachelor's degree"], 'lunch': ['standard'], 'test preparation course': ['none'], 'math score': [75.0], 'reading score': [84.0], 'writing score': [80.0]}
+2025-07-13 16:53:33,023 - __main__ - DEBUG - Feature DataFrame:
+   gender  ... writing score
+0  female  ...          80.0
+
+[1 rows x 8 columns]
+2025-07-13 16:53:33,024 - __main__ - DEBUG - Scaled numerical features: [[0.56635376 0.99948173 0.7657083 ]]
+2025-07-13 16:53:33,026 - __main__ - DEBUG - Encoded categorical features shape: (1, 17)
+2025-07-13 16:53:33,027 - __main__ - DEBUG - Final feature array shape: (1, 20)
+2025-07-13 16:53:33,027 - __main__ - DEBUG - Making prediction
+2025-07-13 16:53:33,027 - __main__ - INFO - Making prediction
+2025-07-13 16:53:33,027 - __main__ - DEBUG - Input features shape: (1, 20)
+2025-07-13 16:53:33,124 - __main__ - DEBUG - Raw prediction output: [[79.13972]]
+2025-07-13 16:53:33,124 - __main__ - INFO - Prediction result: 79.14
+2025-07-13 16:53:33,124 - __main__ - DEBUG - Saving prediction results
+2025-07-13 16:53:33,124 - __main__ - DEBUG - Attempt 1: Saving prediction for student 4
+2025-07-13 16:53:33,128 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 422 177
+2025-07-13 16:53:33,129 - __main__ - ERROR - API request failed with status 422
+2025-07-13 16:53:34,130 - __main__ - DEBUG - Attempt 2: Saving prediction for student 4
+2025-07-13 16:53:34,133 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 422 177
+2025-07-13 16:53:34,133 - __main__ - ERROR - API request failed with status 422
+2025-07-13 16:53:36,134 - __main__ - DEBUG - Attempt 3: Saving prediction for student 4
+2025-07-13 16:53:36,140 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 422 177
+2025-07-13 16:53:36,141 - __main__ - ERROR - API request failed with status 422
+2025-07-13 16:53:40,143 - __main__ - ERROR - Failed to save prediction after 3 attempts
+2025-07-13 16:53:40,144 - __main__ - ERROR - Failed to save prediction to database
+2025-07-13 16:58:49,578 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 16:58:49,579 - __main__ - DEBUG - Initializing components
+2025-07-13 16:58:49,579 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 16:58:49,579 - __main__ - INFO - Loading model artifacts
+2025-07-13 16:58:49,579 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 16:58:49,593 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 16:58:49,760 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 16:58:49,766 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 16:58:49,806 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 16:58:49,807 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 16:58:49,808 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 16:58:49,808 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 16:58:49,808 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 16:58:49,808 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 16:58:49,810 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 16:58:51,866 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 16:58:52,078 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 16:58:52,081 - __main__ - DEBUG - Received 100 student records
+2025-07-13 16:58:52,082 - __main__ - INFO - Selected student ID: 4
+2025-07-13 16:58:52,082 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:58:52,082 - __main__ - INFO - Processing student ID: 4
+2025-07-13 16:58:52,082 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:58:52,083 - __main__ - DEBUG - Preparing features
+2025-07-13 16:58:52,083 - __main__ - INFO - Preparing features for prediction
+2025-07-13 16:58:52,083 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 16:58:52,083 - __main__ - DEBUG - Normalizing student data
+2025-07-13 16:58:52,083 - __main__ - DEBUG - Normalized data: {'student_id': 4, 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'test_preparation': {'status': 'none'}, 'exams': {'math_score': 75, 'reading_score': 84, 'writing_score': 80}}
+2025-07-13 16:58:52,083 - __main__ - DEBUG - Constructed feature dict: {'gender': ['female'], 'race/ethnicity': ['group B'], 'parental level of education': ["bachelor's degree"], 'lunch': ['standard'], 'test preparation course': ['none'], 'math score': [75.0], 'reading score': [84.0], 'writing score': [80.0]}
+2025-07-13 16:58:52,112 - __main__ - DEBUG - Feature DataFrame:
+   gender race/ethnicity  ... reading score writing score
+0  female        group B  ...          84.0          80.0
+
+[1 rows x 8 columns]
+2025-07-13 16:58:52,114 - __main__ - DEBUG - Scaled numerical features: [[0.56635376 0.99948173 0.7657083 ]]
+2025-07-13 16:58:52,117 - __main__ - DEBUG - Encoded categorical features shape: (1, 17)
+2025-07-13 16:58:52,118 - __main__ - DEBUG - Final feature array shape: (1, 20)
+2025-07-13 16:58:52,118 - __main__ - DEBUG - Making prediction
+2025-07-13 16:58:52,118 - __main__ - INFO - Making prediction
+2025-07-13 16:58:52,118 - __main__ - DEBUG - Input features shape: (1, 20)
+2025-07-13 16:58:52,380 - __main__ - DEBUG - Raw prediction output: [[79.13972]]
+2025-07-13 16:58:52,380 - __main__ - INFO - Prediction result: 79.14
+2025-07-13 16:58:52,380 - __main__ - DEBUG - Saving prediction results
+2025-07-13 16:58:52,380 - __main__ - DEBUG - Attempt 1: Saving prediction for student 4
+2025-07-13 16:58:52,386 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 422 177
+2025-07-13 16:58:52,386 - __main__ - ERROR - API request failed with status 422
+2025-07-13 16:58:53,388 - __main__ - DEBUG - Attempt 2: Saving prediction for student 4
+2025-07-13 16:58:53,393 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 422 177
+2025-07-13 16:58:53,394 - __main__ - ERROR - API request failed with status 422
+2025-07-13 16:58:55,394 - __main__ - DEBUG - Attempt 3: Saving prediction for student 4
+2025-07-13 16:58:55,399 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 422 177
+2025-07-13 16:58:55,399 - __main__ - ERROR - API request failed with status 422
+2025-07-13 16:58:59,400 - __main__ - ERROR - Failed to save prediction after 3 attempts
+2025-07-13 16:58:59,400 - __main__ - ERROR - Failed to save prediction to database
+2025-07-13 17:03:28,935 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 17:03:28,936 - __main__ - DEBUG - Initializing components
+2025-07-13 17:03:28,936 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 17:03:28,936 - __main__ - INFO - Loading model artifacts
+2025-07-13 17:03:28,936 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 17:03:28,938 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 17:03:29,024 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 17:03:29,027 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 17:03:29,039 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 17:03:29,040 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 17:03:29,040 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 17:03:29,041 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 17:03:29,041 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 17:03:29,041 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 17:03:29,043 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 17:03:31,103 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 17:03:31,282 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 17:03:31,285 - __main__ - DEBUG - Received 100 student records
+2025-07-13 17:03:31,285 - __main__ - INFO - Selected student ID: 4
+2025-07-13 17:03:31,285 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 17:03:31,285 - __main__ - INFO - Processing student ID: 4
+2025-07-13 17:03:31,286 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 17:03:31,286 - __main__ - DEBUG - Preparing features
+2025-07-13 17:03:31,286 - __main__ - INFO - Preparing features for prediction
+2025-07-13 17:03:31,286 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 17:03:31,287 - __main__ - DEBUG - Normalizing student data
+2025-07-13 17:03:31,287 - __main__ - DEBUG - Normalized data: {'student_id': 4, 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'test_preparation': {'status': 'none'}, 'exams': {'math_score': 75, 'reading_score': 84, 'writing_score': 80}}
+2025-07-13 17:03:31,287 - __main__ - DEBUG - Constructed feature dict: {'gender': ['female'], 'race/ethnicity': ['group B'], 'parental level of education': ["bachelor's degree"], 'lunch': ['standard'], 'test preparation course': ['none'], 'math score': [75.0], 'reading score': [84.0], 'writing score': [80.0]}
+2025-07-13 17:03:31,296 - __main__ - DEBUG - Feature DataFrame:
+   gender race/ethnicity  ... reading score writing score
+0  female        group B  ...          84.0          80.0
+
+[1 rows x 8 columns]
+2025-07-13 17:03:31,298 - __main__ - DEBUG - Scaled numerical features: [[0.56635376 0.99948173 0.7657083 ]]
+2025-07-13 17:03:31,301 - __main__ - DEBUG - Encoded categorical features shape: (1, 17)
+2025-07-13 17:03:31,302 - __main__ - DEBUG - Final feature array shape: (1, 20)
+2025-07-13 17:03:31,302 - __main__ - DEBUG - Making prediction
+2025-07-13 17:03:31,302 - __main__ - INFO - Making prediction
+2025-07-13 17:03:31,302 - __main__ - DEBUG - Input features shape: (1, 20)
+2025-07-13 17:03:31,413 - __main__ - DEBUG - Raw prediction output: [[79.13972]]
+2025-07-13 17:03:31,413 - __main__ - INFO - Prediction result: 79.14
+2025-07-13 17:03:31,414 - __main__ - DEBUG - Saving prediction results
+2025-07-13 17:03:31,414 - __main__ - DEBUG - Attempt 1: Saving prediction for student 4
+2025-07-13 17:03:31,416 - urllib3.connectionpool - DEBUG - Resetting dropped connection: localhost
+2025-07-13 17:03:33,467 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 422 142
+2025-07-13 17:03:33,468 - __main__ - ERROR - API request failed with status 422
+2025-07-13 17:03:34,469 - __main__ - DEBUG - Attempt 2: Saving prediction for student 4
+2025-07-13 17:03:34,474 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 422 142
+2025-07-13 17:03:34,475 - __main__ - ERROR - API request failed with status 422
+2025-07-13 17:03:36,476 - __main__ - DEBUG - Attempt 3: Saving prediction for student 4
+2025-07-13 17:03:36,487 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 422 142
+2025-07-13 17:03:36,488 - __main__ - ERROR - API request failed with status 422
+2025-07-13 17:03:40,489 - __main__ - ERROR - Failed to save prediction after 3 attempts
+2025-07-13 17:03:40,489 - __main__ - ERROR - Failed to save prediction to database
+2025-07-13 17:10:09,790 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 17:10:09,790 - __main__ - DEBUG - Initializing components
+2025-07-13 17:10:09,790 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 17:10:09,791 - __main__ - INFO - Loading model artifacts
+2025-07-13 17:10:09,791 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 17:10:09,793 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 17:10:09,895 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 17:10:09,899 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 17:10:09,923 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 17:10:09,924 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 17:10:09,924 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 17:10:09,925 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 17:10:09,925 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 17:10:09,925 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 17:10:09,928 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 17:10:11,989 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 17:10:12,207 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 17:10:12,209 - __main__ - DEBUG - Received 100 student records
+2025-07-13 17:10:12,209 - __main__ - INFO - Selected student ID: 4
+2025-07-13 17:10:12,209 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 17:10:12,210 - __main__ - INFO - Processing student ID: 4
+2025-07-13 17:10:12,210 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 17:10:12,210 - __main__ - DEBUG - Preparing features
+2025-07-13 17:10:12,210 - __main__ - INFO - Preparing features for prediction
+2025-07-13 17:10:12,210 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 17:10:12,211 - __main__ - DEBUG - Normalizing student data
+2025-07-13 17:10:12,211 - __main__ - DEBUG - Normalized data: {'student_id': 4, 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'test_preparation': {'status': 'none'}, 'exams': {'math_score': 75, 'reading_score': 84, 'writing_score': 80}}
+2025-07-13 17:10:12,211 - __main__ - DEBUG - Constructed feature dict: {'gender': ['female'], 'race/ethnicity': ['group B'], 'parental level of education': ["bachelor's degree"], 'lunch': ['standard'], 'test preparation course': ['none'], 'math score': [75.0], 'reading score': [84.0], 'writing score': [80.0]}
+2025-07-13 17:10:12,220 - __main__ - DEBUG - Feature DataFrame:
+   gender race/ethnicity  ... reading score writing score
+0  female        group B  ...          84.0          80.0
+
+[1 rows x 8 columns]
+2025-07-13 17:10:12,221 - __main__ - DEBUG - Scaled numerical features: [[0.56635376 0.99948173 0.7657083 ]]
+2025-07-13 17:10:12,223 - __main__ - DEBUG - Encoded categorical features shape: (1, 17)
+2025-07-13 17:10:12,223 - __main__ - DEBUG - Final feature array shape: (1, 20)
+2025-07-13 17:10:12,223 - __main__ - DEBUG - Making prediction
+2025-07-13 17:10:12,223 - __main__ - INFO - Making prediction
+2025-07-13 17:10:12,224 - __main__ - DEBUG - Input features shape: (1, 20)
+2025-07-13 17:10:12,323 - __main__ - DEBUG - Raw prediction output: [[79.13972]]
+2025-07-13 17:10:12,323 - __main__ - INFO - Prediction result: 79.14
+2025-07-13 17:10:12,324 - __main__ - DEBUG - Saving prediction results
+2025-07-13 17:10:12,324 - __main__ - DEBUG - Attempt 1: Saving prediction for student 4
+2025-07-13 17:10:12,368 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 200 84
+2025-07-13 17:10:12,369 - __main__ - ERROR - API request failed with status 200
+2025-07-13 17:10:13,370 - __main__ - DEBUG - Attempt 2: Saving prediction for student 4
+2025-07-13 17:10:13,386 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 200 84
+2025-07-13 17:10:13,387 - __main__ - ERROR - API request failed with status 200
+2025-07-13 17:10:15,388 - __main__ - DEBUG - Attempt 3: Saving prediction for student 4
+2025-07-13 17:10:15,409 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 200 84
+2025-07-13 17:10:15,410 - __main__ - ERROR - API request failed with status 200
+2025-07-13 17:10:19,411 - __main__ - ERROR - Failed to save prediction after 3 attempts
+2025-07-13 17:10:19,411 - __main__ - ERROR - Failed to save prediction to database
+2025-07-13 17:14:36,316 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 17:14:36,317 - __main__ - DEBUG - Initializing components
+2025-07-13 17:14:36,317 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 17:14:36,317 - __main__ - INFO - Loading model artifacts
+2025-07-13 17:14:36,317 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 17:14:36,319 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 17:14:36,403 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 17:14:36,406 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 17:14:36,424 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 17:14:36,425 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 17:14:36,425 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 17:14:36,425 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 17:14:36,425 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 17:14:36,425 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 17:14:36,427 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 17:14:38,473 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 17:14:38,668 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 17:14:38,669 - __main__ - DEBUG - Received 100 student records
+2025-07-13 17:14:38,670 - __main__ - INFO - Selected student ID: 4
+2025-07-13 17:14:38,670 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 17:14:38,670 - __main__ - INFO - Processing student ID: 4
+2025-07-13 17:14:38,670 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 17:14:38,670 - __main__ - DEBUG - Preparing features
+2025-07-13 17:14:38,670 - __main__ - INFO - Preparing features for prediction
+2025-07-13 17:14:38,670 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 17:14:38,670 - __main__ - DEBUG - Normalizing student data
+2025-07-13 17:14:38,671 - __main__ - DEBUG - Normalized data: {'student_id': 4, 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'test_preparation': {'status': 'none'}, 'exams': {'math_score': 75, 'reading_score': 84, 'writing_score': 80}}
+2025-07-13 17:14:38,671 - __main__ - DEBUG - Constructed feature dict: {'gender': ['female'], 'race/ethnicity': ['group B'], 'parental level of education': ["bachelor's degree"], 'lunch': ['standard'], 'test preparation course': ['none'], 'math score': [75.0], 'reading score': [84.0], 'writing score': [80.0]}
+2025-07-13 17:14:38,679 - __main__ - DEBUG - Feature DataFrame:
+   gender race/ethnicity  ... reading score writing score
+0  female        group B  ...          84.0          80.0
+
+[1 rows x 8 columns]
+2025-07-13 17:14:38,682 - __main__ - DEBUG - Scaled numerical features: [[0.56635376 0.99948173 0.7657083 ]]
+2025-07-13 17:14:38,683 - __main__ - DEBUG - Encoded categorical features shape: (1, 17)
+2025-07-13 17:14:38,684 - __main__ - DEBUG - Final feature array shape: (1, 20)
+2025-07-13 17:14:38,684 - __main__ - DEBUG - Making prediction
+2025-07-13 17:14:38,684 - __main__ - INFO - Making prediction
+2025-07-13 17:14:38,684 - __main__ - DEBUG - Input features shape: (1, 20)
+2025-07-13 17:14:38,784 - __main__ - DEBUG - Raw prediction output: [[79.13972]]
+2025-07-13 17:14:38,785 - __main__ - INFO - Prediction result: 79.14
+2025-07-13 17:14:38,785 - __main__ - DEBUG - Saving prediction results
+2025-07-13 17:14:38,785 - __main__ - DEBUG - Attempt 1: Saving prediction for student 4
+2025-07-13 17:14:38,799 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 200 84
+2025-07-13 17:14:38,799 - __main__ - ERROR - API request failed with status 200
+2025-07-13 17:14:39,801 - __main__ - DEBUG - Attempt 2: Saving prediction for student 4
+2025-07-13 17:14:39,822 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 200 84
+2025-07-13 17:14:39,823 - __main__ - ERROR - API request failed with status 200
+2025-07-13 17:14:41,824 - __main__ - DEBUG - Attempt 3: Saving prediction for student 4
+2025-07-13 17:14:41,847 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 200 84
+2025-07-13 17:14:41,847 - __main__ - ERROR - API request failed with status 200
+2025-07-13 17:14:45,848 - __main__ - ERROR - Failed to save prediction after 3 attempts
+2025-07-13 17:14:45,849 - __main__ - ERROR - Failed to save prediction to database
+2025-07-13 17:19:42,909 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 17:19:42,909 - __main__ - DEBUG - Initializing components
+2025-07-13 17:19:42,909 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 17:19:42,910 - __main__ - INFO - Loading model artifacts
+2025-07-13 17:19:42,910 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 17:19:42,920 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 17:19:43,075 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 17:19:43,079 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 17:19:43,108 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 17:19:43,109 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 17:19:43,110 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 17:19:43,110 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 17:19:43,110 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 17:19:43,110 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 17:19:43,113 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 17:19:45,168 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 17:19:45,326 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 17:19:45,328 - __main__ - DEBUG - Received 100 student records
+2025-07-13 17:19:45,328 - __main__ - INFO - Selected student ID: 4
+2025-07-13 17:19:45,329 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 17:19:45,329 - __main__ - INFO - Processing student ID: 4
+2025-07-13 17:19:45,329 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 17:19:45,329 - __main__ - DEBUG - Preparing features
+2025-07-13 17:19:45,330 - __main__ - INFO - Preparing features for prediction
+2025-07-13 17:19:45,330 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 17:19:45,330 - __main__ - DEBUG - Normalizing student data
+2025-07-13 17:19:45,330 - __main__ - DEBUG - Normalized data: {'student_id': 4, 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'test_preparation': {'status': 'none'}, 'exams': {'math_score': 75, 'reading_score': 84, 'writing_score': 80}}
+2025-07-13 17:19:45,330 - __main__ - DEBUG - Constructed feature dict: {'gender': ['female'], 'race/ethnicity': ['group B'], 'parental level of education': ["bachelor's degree"], 'lunch': ['standard'], 'test preparation course': ['none'], 'math score': [75.0], 'reading score': [84.0], 'writing score': [80.0]}
+2025-07-13 17:19:45,342 - __main__ - DEBUG - Feature DataFrame:
+   gender race/ethnicity parental level of education  ... math score reading score  writing score
+0  female        group B           bachelor's degree  ...       75.0          84.0           80.0
+
+[1 rows x 8 columns]
+2025-07-13 17:19:45,343 - __main__ - DEBUG - Scaled numerical features: [[0.56635376 0.99948173 0.7657083 ]]
+2025-07-13 17:19:45,346 - __main__ - DEBUG - Encoded categorical features shape: (1, 17)
+2025-07-13 17:19:45,347 - __main__ - DEBUG - Final feature array shape: (1, 20)
+2025-07-13 17:19:45,347 - __main__ - DEBUG - Making prediction
+2025-07-13 17:19:45,347 - __main__ - INFO - Making prediction
+2025-07-13 17:19:45,347 - __main__ - DEBUG - Input features shape: (1, 20)
+2025-07-13 17:19:45,586 - __main__ - DEBUG - Raw prediction output: [[79.13972]]
+2025-07-13 17:19:45,586 - __main__ - INFO - Prediction result: 79.14
+2025-07-13 17:19:45,586 - __main__ - DEBUG - Saving prediction results
+2025-07-13 17:19:45,586 - __main__ - ERROR - Prediction pipeline failed: name 'timezone' is not defined
+Traceback (most recent call last):
+  File "C:\Users\HP\Database-Prediction-Pipeline\Task 3\predict.py", line 374, in main
+    if not api_client.save_prediction(student['student_id'], prediction):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Database-Prediction-Pipeline\Task 3\predict.py", line 140, in save_prediction
+    'prediction_date': datetime.now(timezone.utc).isoformat()  # Use UTC timezone
+                                    ^^^^^^^^
+NameError: name 'timezone' is not defined
+2025-07-13 17:21:38,020 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 17:21:38,021 - __main__ - DEBUG - Initializing components
+2025-07-13 17:21:38,021 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 17:21:38,021 - __main__ - INFO - Loading model artifacts
+2025-07-13 17:21:38,021 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 17:21:38,023 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 17:21:38,108 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 17:21:38,110 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 17:21:38,124 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 17:21:38,124 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 17:21:38,125 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 17:21:38,125 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 17:21:38,125 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 17:21:38,125 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 17:21:38,127 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 17:21:40,153 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 17:21:40,299 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 17:21:40,323 - __main__ - DEBUG - Received 100 student records
+2025-07-13 17:21:40,324 - __main__ - INFO - Selected student ID: 4
+2025-07-13 17:21:40,324 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 17:21:40,324 - __main__ - INFO - Processing student ID: 4
+2025-07-13 17:21:40,324 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 17:21:40,324 - __main__ - DEBUG - Preparing features
+2025-07-13 17:21:40,325 - __main__ - INFO - Preparing features for prediction
+2025-07-13 17:21:40,325 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 17:21:40,325 - __main__ - DEBUG - Normalizing student data
+2025-07-13 17:21:40,325 - __main__ - DEBUG - Normalized data: {'student_id': 4, 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'test_preparation': {'status': 'none'}, 'exams': {'math_score': 75, 'reading_score': 84, 'writing_score': 80}}
+2025-07-13 17:21:40,326 - __main__ - DEBUG - Constructed feature dict: {'gender': ['female'], 'race/ethnicity': ['group B'], 'parental level of education': ["bachelor's degree"], 'lunch': ['standard'], 'test preparation course': ['none'], 'math score': [75.0], 'reading score': [84.0], 'writing score': [80.0]}
+2025-07-13 17:21:40,333 - __main__ - DEBUG - Feature DataFrame:
+   gender race/ethnicity parental level of education  ... math score reading score  writing score
+0  female        group B           bachelor's degree  ...       75.0          84.0           80.0
+
+[1 rows x 8 columns]
+2025-07-13 17:21:40,336 - __main__ - DEBUG - Scaled numerical features: [[0.56635376 0.99948173 0.7657083 ]]
+2025-07-13 17:21:40,338 - __main__ - DEBUG - Encoded categorical features shape: (1, 17)
+2025-07-13 17:21:40,338 - __main__ - DEBUG - Final feature array shape: (1, 20)
+2025-07-13 17:21:40,338 - __main__ - DEBUG - Making prediction
+2025-07-13 17:21:40,338 - __main__ - INFO - Making prediction
+2025-07-13 17:21:40,338 - __main__ - DEBUG - Input features shape: (1, 20)
+2025-07-13 17:21:40,435 - __main__ - DEBUG - Raw prediction output: [[79.13972]]
+2025-07-13 17:21:40,436 - __main__ - INFO - Prediction result: 79.14
+2025-07-13 17:21:40,436 - __main__ - DEBUG - Saving prediction results
+2025-07-13 17:21:40,436 - __main__ - DEBUG - Attempt 1/3: Saving prediction for student 4
+2025-07-13 17:21:40,446 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 200 84
+2025-07-13 17:21:40,447 - __main__ - INFO - Successfully saved prediction for student 4
+2025-07-13 17:21:40,447 - __main__ - DEBUG - API response: {'student_id': 4, 'prediction': 79.1397, 'id': 7, 'prediction_date': '2025-07-13T14:21:40'}
+2025-07-13 17:21:40,447 - __main__ - INFO - Prediction pipeline completed successfully
+2025-07-13 17:23:13,088 - __main__ - INFO - Starting prediction pipeline
+2025-07-13 17:23:13,088 - __main__ - DEBUG - Initializing components
+2025-07-13 17:23:13,088 - __main__ - DEBUG - PredictionClient initialized
+2025-07-13 17:23:13,089 - __main__ - INFO - Loading model artifacts
+2025-07-13 17:23:13,089 - __main__ - DEBUG - Loading model from C:/Users/HP/Database-Prediction-Pipeline/models/models/student_performance_nn_model.h5
+2025-07-13 17:23:13,090 - h5py._conv - DEBUG - Creating converter from 3 to 5
+2025-07-13 17:23:13,183 - absl - WARNING - Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+2025-07-13 17:23:13,187 - __main__ - DEBUG - Loading scaler from C:/Users/HP/Database-Prediction-Pipeline/models/models/scaler.pkl
+2025-07-13 17:23:13,205 - __main__ - DEBUG - Loading encoder from C:/Users/HP/Database-Prediction-Pipeline/models/models/encoder.pkl
+2025-07-13 17:23:13,206 - __main__ - DEBUG - Loading feature names from C:/Users/HP/Database-Prediction-Pipeline/models/models/feature_names.pkl
+2025-07-13 17:23:13,207 - __main__ - INFO - All model artifacts loaded successfully
+2025-07-13 17:23:13,207 - __main__ - DEBUG - NeuralNetworkPredictor initialized
+2025-07-13 17:23:13,207 - __main__ - DEBUG - Fetching latest student record
+2025-07-13 17:23:13,207 - __main__ - DEBUG - Making request to http://localhost:8000/students
+2025-07-13 17:23:13,209 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2025-07-13 17:23:15,256 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students HTTP/1.1" 307 0
+2025-07-13 17:23:15,464 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /students/ HTTP/1.1" 200 94049
+2025-07-13 17:23:15,466 - __main__ - DEBUG - Received 100 student records
+2025-07-13 17:23:15,466 - __main__ - INFO - Selected student ID: 4
+2025-07-13 17:23:15,467 - __main__ - DEBUG - Student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 17:23:15,467 - __main__ - INFO - Processing student ID: 4
+2025-07-13 17:23:15,467 - __main__ - DEBUG - Raw student record: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 17:23:15,467 - __main__ - DEBUG - Preparing features
+2025-07-13 17:23:15,467 - __main__ - INFO - Preparing features for prediction
+2025-07-13 17:23:15,468 - __main__ - DEBUG - Input student data: {'student_id': 4, 'created_at': '2025-07-13T12:07:33', 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'exams': [{'math_score': 75, 'reading_score': 84, 'writing_score': 80}, {'math_score': 97, 'reading_score': 97, 'writing_score': 96}, {'math_score': 65, 'reading_score': 81, 'writing_score': 81}, {'math_score': 66, 'reading_score': 74, 'writing_score': 81}, {'math_score': 61, 'reading_score': 72, 'writing_score': 70}, {'math_score': 52, 'reading_score': 65, 'writing_score': 69}, {'math_score': 67, 'reading_score': 86, 'writing_score': 83}, {'math_score': 72, 'reading_score': 72, 'writing_score': 74}], 'test_preparation': None}
+2025-07-13 17:23:15,468 - __main__ - DEBUG - Normalizing student data
+2025-07-13 17:23:15,468 - __main__ - DEBUG - Normalized data: {'student_id': 4, 'gender': 'female', 'race_ethnicity': 'group B', 'parental_level_of_education': "bachelor's degree", 'lunch': 'standard', 'test_preparation': {'status': 'none'}, 'exams': {'math_score': 75, 'reading_score': 84, 'writing_score': 80}}
+2025-07-13 17:23:15,468 - __main__ - DEBUG - Constructed feature dict: {'gender': ['female'], 'race/ethnicity': ['group B'], 'parental level of education': ["bachelor's degree"], 'lunch': ['standard'], 'test preparation course': ['none'], 'math score': [75.0], 'reading score': [84.0], 'writing score': [80.0]}
+2025-07-13 17:23:15,476 - __main__ - DEBUG - Feature DataFrame:
+   gender race/ethnicity  ... reading score writing score
+0  female        group B  ...          84.0          80.0
+
+[1 rows x 8 columns]
+2025-07-13 17:23:15,478 - __main__ - DEBUG - Scaled numerical features: [[0.56635376 0.99948173 0.7657083 ]]
+2025-07-13 17:23:15,480 - __main__ - DEBUG - Encoded categorical features shape: (1, 17)
+2025-07-13 17:23:15,480 - __main__ - DEBUG - Final feature array shape: (1, 20)
+2025-07-13 17:23:15,480 - __main__ - DEBUG - Making prediction
+2025-07-13 17:23:15,480 - __main__ - INFO - Making prediction
+2025-07-13 17:23:15,480 - __main__ - DEBUG - Input features shape: (1, 20)
+2025-07-13 17:23:15,584 - __main__ - DEBUG - Raw prediction output: [[79.13972]]
+2025-07-13 17:23:15,584 - __main__ - INFO - Prediction result: 79.14
+2025-07-13 17:23:15,585 - __main__ - DEBUG - Saving prediction results
+2025-07-13 17:23:15,585 - __main__ - DEBUG - Attempt 1/3: Saving prediction for student 4
+2025-07-13 17:23:15,597 - urllib3.connectionpool - DEBUG - http://localhost:8000 "POST /predictions/ HTTP/1.1" 200 84
+2025-07-13 17:23:15,598 - __main__ - INFO - Successfully saved prediction for student 4
+2025-07-13 17:23:15,598 - __main__ - DEBUG - API response: {'student_id': 4, 'prediction': 79.1397, 'id': 8, 'prediction_date': '2025-07-13T14:23:16'}
+2025-07-13 17:23:15,598 - __main__ - INFO - Prediction pipeline completed successfully

@@ -37,7 +37,7 @@ CREATE TABLE Exams (
     FOREIGN KEY (student_id) REFERENCES Students(student_id) ON DELETE CASCADE
 );
 
--- Table: ExamAuditLog
+-- Table: ExamAuditLog (FIXED - Removed DEFAULT USER())
 CREATE TABLE ExamAuditLog (
     log_id INT AUTO_INCREMENT PRIMARY KEY,
     exam_id INT NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE ExamAuditLog (
     old_writing_score INT,
     new_writing_score INT,
     changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    changed_by VARCHAR(50) DEFAULT CURRENT_USER,
+    changed_by VARCHAR(50),  -- Removed DEFAULT USER() as it's not allowed
     FOREIGN KEY (exam_id) REFERENCES Exams(exam_id)
 );
 
@@ -84,7 +84,7 @@ BEGIN
 END //
 DELIMITER ;
 
--- Trigger: Log exam score changes
+-- Trigger: Log exam score changes (Updated to handle changed_by)
 DELIMITER //
 CREATE TRIGGER after_exam_update
 AFTER UPDATE ON Exams
@@ -102,7 +102,9 @@ BEGIN
             old_reading_score,
             new_reading_score,
             old_writing_score,
-            new_writing_score
+            new_writing_score,
+            changed_by,
+            changed_at
         ) VALUES (
             NEW.exam_id,
             'UPDATE',
@@ -111,7 +113,9 @@ BEGIN
             OLD.reading_score,
             NEW.reading_score,
             OLD.writing_score,
-            NEW.writing_score
+            NEW.writing_score,
+            CURRENT_USER,  -- Using CURRENT_USER here instead of DEFAULT
+            CURRENT_TIMESTAMP
         );
     END IF;
 END //
