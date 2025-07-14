@@ -86,3 +86,41 @@ class PredictionClient:
             logger.error(f"Unexpected error fetching student: {str(e)}")
             return None
 
+  def normalize_student_data(self, student_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Normalize student data structure with defaults and validation"""
+        logger.debug("Normalizing student data")
+        
+        if not student_data:
+            logger.warning("Received empty student data")
+            return {}
+        
+        # Set default values for all required fields
+        normalized = {
+            'student_id': student_data.get('student_id'),
+            'gender': student_data.get('gender', 'unknown'),
+            'race_ethnicity': student_data.get('race_ethnicity', 'unknown'),
+            'parental_level_of_education': student_data.get('parental_level_of_education', 'unknown'),
+            'lunch': student_data.get('lunch', 'standard'),
+            'test_preparation': {'status': 'none'},  # Default value
+            'exams': {}  # Default empty exam data
+        }
+        
+        # Handle test preparation data
+        if 'test_preparation' in student_data:
+            if student_data['test_preparation'] is None:
+                normalized['test_preparation'] = {'status': 'none'}
+            elif isinstance(student_data['test_preparation'], dict):
+                normalized['test_preparation'] = {
+                    'status': student_data['test_preparation'].get('status', 'none')
+                }
+        
+        # Handle exam data
+        if 'exams' in student_data:
+            exams = student_data['exams']
+            if isinstance(exams, list) and exams:
+                normalized['exams'] = exams[0] if isinstance(exams[0], dict) else {}
+            elif isinstance(exams, dict):
+                normalized['exams'] = exams
+        
+        logger.debug(f"Normalized data: {normalized}")
+        return normalized
