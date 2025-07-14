@@ -1,5 +1,5 @@
 -- Create Database
-CREATE DATABASE IF NOT EXISTS student_performance;
+CREATE DATABASE IF EXISTS student_performance;
 USE student_performance;
 
 -- Table: Students (demographics, excluding test_preparation)
