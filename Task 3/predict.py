@@ -22,7 +22,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Configuration
+#Configuration
 API_BASE_URL = "http://localhost:8000"
 MODEL_DIR = "C:/Users/HP/Database-Prediction-Pipeline/models/models"
 MODEL_PATH = f"{MODEL_DIR}/student_performance_nn_model.h5"
@@ -86,7 +86,7 @@ class PredictionClient:
             logger.error(f"Unexpected error fetching student: {str(e)}")
             return None
 
-  def normalize_student_data(self, student_data: Dict[str, Any]) -> Dict[str, Any]:
+    def normalize_student_data(self, student_data: Dict[str, Any]) -> Dict[str, Any]:
         """Normalize student data structure with defaults and validation"""
         logger.debug("Normalizing student data")
         
