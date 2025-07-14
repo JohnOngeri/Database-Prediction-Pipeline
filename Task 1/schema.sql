@@ -121,3 +121,7 @@ BEGIN
 END //
 DELIMITER ;
 
+-- Sample Data (3 Records)
+CALL AddStudentRecord('female', 'group B', 'bachelor''s degree', 'standard', 'none', 72, 72, 74);
+CALL AddStudentRecord('female', 'group C', 'some college', 'standard', 'completed', 69, 90, 88);
+CALL AddStudentRecord('female', 'group B', 'master''s degree', 'standard', 'none', 90, 95, 93);
