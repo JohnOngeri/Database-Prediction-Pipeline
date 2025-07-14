@@ -12,6 +12,7 @@ This project demonstrates an end-to-end pipeline that integrates **relational an
 
 ## 📌 Project Structure
 
+```
 DATABASE-PREDICTION-PIPELINE/
 │
 ├── models/
@@ -42,6 +43,7 @@ DATABASE-PREDICTION-PIPELINE/
 │
 ├── README.md
 └── StudentsPerformance.csv         # Original dataset used
+```
 
 ---
 
