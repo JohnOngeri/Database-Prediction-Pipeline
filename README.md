@@ -1,11 +1,8 @@
-```
-# 📊 Formative 1: Database - Prediction Pipeline
+ Formative 1: Database - Prediction Pipeline
 
-## 🧠 Overview
+##  Overview
 
 This project demonstrates an end-to-end pipeline that integrates **relational and NoSQL databases**, **FastAPI**, and **machine learning predictions**. The primary goal is to reinforce database design, implementation, API development, and model integration.
-
----
 
 ## 👥 Group Members
 - John
