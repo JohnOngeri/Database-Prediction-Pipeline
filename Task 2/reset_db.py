@@ -1,7 +1,7 @@
 import pymysql
 from database import DATABASE_URL
 
-# Extract database info from URL
+#Extract database info from URL
 db_info = DATABASE_URL.split('://')[1].split('@')
 user_pass, host_db = db_info[0].split(':'), db_info[1].split('/')
 username, password = user_pass[0], user_pass[1]
