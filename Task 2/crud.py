@@ -10,7 +10,7 @@ def create_student_with_exam(db: Session, student: schemas.StudentCreate):
         lunch=student.lunch.value
     )
     db.add(db_student)
-    db.flush()  # Get the student_id before commit
+    db.flush()  #Get the student_id before commit
     
     db.add(TestPreparation(
         student_id=db_student.student_id,
